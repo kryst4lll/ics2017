@@ -47,7 +47,7 @@ typedef struct {
       };
       union {
         uint32_t edi;
-        uint32_t _32_7; // 与 gpr[7]._32 共享内存
+        uint32_t _32_7; // 与 gpr[7]._32 共享内存//
       };
     };
     struct {
