@@ -16,17 +16,55 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
 
 typedef struct {
   union {
-    uint32_t _32;
-    uint16_t _16;
-    uint8_t _8[2];
-  } gpr[8];
+    struct {
+      union {
+        uint32_t eax;
+        uint32_t _32_0; // 与 gpr[0]._32 共享内存
+      };
+      union {
+        uint32_t ecx;
+        uint32_t _32_1; // 与 gpr[1]._32 共享内存
+      };
+      union {
+        uint32_t edx;
+        uint32_t _32_2; // 与 gpr[2]._32 共享内存
+      };
+      union {
+        uint32_t ebx;
+        uint32_t _32_3; // 与 gpr[3]._32 共享内存
+      };
+      union {
+        uint32_t esp;
+        uint32_t _32_4; // 与 gpr[4]._32 共享内存
+      };
+      union {
+        uint32_t ebp;
+        uint32_t _32_5; // 与 gpr[5]._32 共享内存
+      };
+      union {
+        uint32_t esi;
+        uint32_t _32_6; // 与 gpr[6]._32 共享内存
+      };
+      union {
+        uint32_t edi;
+        uint32_t _32_7; // 与 gpr[7]._32 共享内存
+      };
+    };
+    struct {
+      union {
+        uint32_t _32;
+        uint16_t _16;
+        uint8_t _8[2];
+      } gpr[8];
+    };
+  };
 
   /* Do NOT change the order of the GPRs' definitions. */
 
   /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
    * in PA2 able to directly access these registers.
    */
-  rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+  // rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
 
   vaddr_t eip;
 
