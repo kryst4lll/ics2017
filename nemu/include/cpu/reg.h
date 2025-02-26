@@ -19,35 +19,35 @@ typedef struct {
     struct {
       union {
         uint32_t eax;
-        uint32_t _32_0; // 与 gpr[0]._32 共享内存
+        // uint32_t _32_0; // 与 gpr[0]._32 共享内存
       };
       union {
         uint32_t ecx;
-        uint32_t _32_1; // 与 gpr[1]._32 共享内存
+        // uint32_t _32_1; // 与 gpr[1]._32 共享内存
       };
       union {
         uint32_t edx;
-        uint32_t _32_2; // 与 gpr[2]._32 共享内存
+        // uint32_t _32_2; // 与 gpr[2]._32 共享内存
       };
       union {
         uint32_t ebx;
-        uint32_t _32_3; // 与 gpr[3]._32 共享内存
+        // uint32_t _32_3; // 与 gpr[3]._32 共享内存
       };
       union {
         uint32_t esp;
-        uint32_t _32_4; // 与 gpr[4]._32 共享内存
+        // uint32_t _32_4; // 与 gpr[4]._32 共享内存
       };
       union {
         uint32_t ebp;
-        uint32_t _32_5; // 与 gpr[5]._32 共享内存
+        // uint32_t _32_5; // 与 gpr[5]._32 共享内存
       };
       union {
         uint32_t esi;
-        uint32_t _32_6; // 与 gpr[6]._32 共享内存
+        // uint32_t _32_6; // 与 gpr[6]._32 共享内存
       };
       union {
         uint32_t edi;
-        uint32_t _32_7; // 与 gpr[7]._32 共享内存
+        // uint32_t _32_7; // 与 gpr[7]._32 共享内存
       };
     };
     struct {
