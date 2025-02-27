@@ -41,7 +41,7 @@ static int cmd_si(char *args) {
   if(args){
     steps = atoi(args);
     if(steps <= 0){
-      printf("invalid steps!");  
+      printf("invalid steps!\n");  
     }
   }
   cpu_exec(steps);
@@ -50,10 +50,12 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
   if(strcmp(args, "r") == 0){
-    printf("The string is: %s\n", args);
+    // printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
       printf("%u\n",cpu.gpr[i]._32);
     }
+  }else{
+    printf("invalid input!\n");
   }
   return 0;
 }
