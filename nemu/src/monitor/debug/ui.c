@@ -40,7 +40,7 @@ static int cmd_si(char *args) {
   int steps = 1;
   if(args){
     steps = atoi(args);
-    if(steps < 0){
+    if(steps <= 0){
       printf("invalid steps!");  
     }
   }
@@ -48,7 +48,15 @@ static int cmd_si(char *args) {
   return 0;
 }
 
-
+static int cmd_info(char *args) {
+  if(args){
+    printf("The string is: %s\n", args);
+    for(int i = 0; i < 8; i++){
+      printf("%u\n",cpu.gpr[i]._32);
+    }
+  }
+  return 0;
+}
 
 
 static int cmd_help(char *args);
@@ -62,6 +70,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute N steps", cmd_si},
+  { "info", "Print regs' status", cmd_info},
   /* TODO: Add more commands */
 
 };
