@@ -49,6 +49,7 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
+  printf("The string is: %s\n", args);
   if(strcmp(args, "r") == 0){
     // printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
