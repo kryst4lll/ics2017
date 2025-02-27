@@ -49,7 +49,7 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
-  if(args){
+  if(strcmp(args, "r") == 0){
     printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
       printf("%u\n",cpu.gpr[i]._32);
