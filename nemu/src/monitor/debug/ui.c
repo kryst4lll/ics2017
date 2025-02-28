@@ -60,11 +60,6 @@ static int cmd_info(char *args) {
   return 0;
 }
 
-uint32_t mem_read(uint32_t addr) {
-  // static uint8_t memory[0x200000] = {0}; 
-  return *(uint32_t *)(addr);
-}
-
 static int cmd_x(char* args) {
   // printf("The string is: %s\n", args);
   int n;
@@ -77,12 +72,7 @@ static int cmd_x(char* args) {
     printf("Invalid number of units: %d\n", n);
     return 0;
   }
-  // printf("data: %x\n",addr);
-  // uint32_t * addr_t = (uint32_t *)(addr);
-  // printf("data: %x\n",*addr_t);
-  // for(int i = 0; i < n; i++){
-  //   printf("data: %x\n",*(uint32_t*)(addr+i*4));
-  // }
+
   // 输出内存数据
   for (int i = 0; i < n; i++) {
     uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
