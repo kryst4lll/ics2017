@@ -61,9 +61,8 @@ static int cmd_info(char *args) {
 }
 
 uint32_t mem_read(uint32_t addr) {
-  // 这里用一个简单的数组模拟内存
-  static uint8_t memory[0x200000] = {0}; // 2MB 内存
-  return *(uint32_t *)(memory + addr);
+  // static uint8_t memory[0x200000] = {0}; 
+  return *(uint32_t *)(addr);
 }
 
 static int cmd_x(char* args) {
