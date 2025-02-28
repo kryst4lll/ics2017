@@ -49,7 +49,6 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
-  printf("The string is: %s\n", args);
   if(strcmp(args, "r") == 0){
     // printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
@@ -61,6 +60,19 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char* args) {
+  printf("The string is: %s\n", args);
+  int n;
+  uint32_t addr;
+  if(sscanf(args, "%d 0x%x", &n, &addr) != 2){
+    printf("invalid arguments!");
+    return 0;
+  }
+  for(int i = 0; i < n; i++){
+    printf("data: %x",*(uint32_t*)(addr+i));
+  }
+  return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -74,6 +86,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute N steps", cmd_si},
   { "info", "Print regs' status", cmd_info},
+  { "x", "Scan memory: x N 0xADDR", cmd_x},
   /* TODO: Add more commands */
 
 };
