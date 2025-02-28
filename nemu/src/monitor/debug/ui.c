@@ -60,6 +60,12 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+uint32_t mem_read(uint32_t addr) {
+  // 这里用一个简单的数组模拟内存
+  static uint8_t memory[0x200000] = {0}; // 2MB 内存
+  return *(uint32_t *)(memory + addr);
+}
+
 static int cmd_x(char* args) {
   printf("The string is: %s\n", args);
   int n;
@@ -68,12 +74,22 @@ static int cmd_x(char* args) {
     printf("invalid arguments!");
     return 0;
   }
-  printf("data: %x\n",addr);
-  uint32_t * addr_t = (uint32_t *)(addr);
-  printf("data: %x\n",*addr_t);
+  if (n <= 0) {
+    printf("Invalid number of units: %d\n", n);
+    return 0;
+  }
+  // printf("data: %x\n",addr);
+  // uint32_t * addr_t = (uint32_t *)(addr);
+  // printf("data: %x\n",*addr_t);
   // for(int i = 0; i < n; i++){
   //   printf("data: %x\n",*(uint32_t*)(addr+i*4));
   // }
+  // 输出内存数据
+  for (int i = 0; i < n; i++) {
+    uint32_t value = mem_read(addr + i * 4); // 读取 4 字节
+    printf("0x%08x: 0x%08x\n", addr + i * 4, value);
+  }
+
   return 0;
 }
 
