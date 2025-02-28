@@ -66,7 +66,7 @@ uint32_t mem_read(uint32_t addr) {
 }
 
 static int cmd_x(char* args) {
-  printf("The string is: %s\n", args);
+  // printf("The string is: %s\n", args);
   int n;
   uint32_t addr;
   if(sscanf(args, "%d 0x%x", &n, &addr) != 2){
@@ -85,7 +85,7 @@ static int cmd_x(char* args) {
   // }
   // 输出内存数据
   for (int i = 0; i < n; i++) {
-    uint32_t value = mem_read(addr + i * 4); // 读取 4 字节
+    uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
     printf("0x%08x: 0x%08x\n", addr + i * 4, value);
   }
 
