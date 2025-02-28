@@ -68,9 +68,10 @@ static int cmd_x(char* args) {
     printf("invalid arguments!");
     return 0;
   }
-  for(int i = 0; i < n; i++){
-    printf("data: %x",*(uint32_t*)(addr+i*4));
-  }
+  printf("data: %x",*(uint32_t*)(addr));
+  // for(int i = 0; i < n; i++){
+  //   printf("data: %x",*(uint32_t*)(addr+i*4));
+  // }
   return 0;
 }
 
