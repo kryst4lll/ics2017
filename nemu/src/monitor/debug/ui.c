@@ -91,6 +91,7 @@ static int cmd_p(char *args){
   uint32_t result = expr(args, &is_success);
 
   if(is_success){
+    printf("%d\n",result);
     return result;
   }else {
     printf("Failed to evaluate expression: %s\n", args);
