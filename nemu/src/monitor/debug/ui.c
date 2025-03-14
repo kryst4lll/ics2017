@@ -82,6 +82,23 @@ static int cmd_x(char* args) {
   return 0;
 }
 
+static int cmd_p(char *args){
+  if(strlen(args) == 0){
+    printf("Usage: p EXPRESSION has no input!\n");
+    return 0;
+  }
+  bool is_success = false;
+  uint32_t result = expr(args, &is_success);
+
+  if(is_success){
+    return result;
+  }else {
+    printf("Failed to evaluate expression: %s\n", args);
+  }
+
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -95,6 +112,7 @@ static struct {
   { "si", "Execute N steps", cmd_si},
   { "info", "Print regs' status", cmd_info},
   { "x", "Scan memory: x N 0xADDR", cmd_x},
+  { "p", "evaluate the value of expression", cmd_p}
   /* TODO: Add more commands */
 
 };
