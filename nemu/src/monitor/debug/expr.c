@@ -282,8 +282,8 @@ uint32_t eval(int p, int q){
     if(tokens[op].type == TK_DEREF){
       
       uint32_t addr = eval(op+1, q);
-      uint32_t value = vaddr_read(addr, 4);
-      printf("0x%08x: 0x%08x\n", addr, value);
+      // uint32_t value = vaddr_read(addr, 4);
+      // printf("0x%08x: 0x%08x\n", addr, value);
       
       return vaddr_read(addr, 4);
     }
