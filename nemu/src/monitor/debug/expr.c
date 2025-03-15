@@ -247,6 +247,7 @@ uint32_t eval(int p, int q){
     }
   }
   else if(p == q-1 && tokens[p].type == TK_DEREF){
+    printf("this is a p!\n");
     return vaddr_read(atoi(tokens[q].str), 4);
   }
   else if(check_parentheses(p, q)){
