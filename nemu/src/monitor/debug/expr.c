@@ -243,9 +243,9 @@ int find_op(int p, int q){
 
 
 uint32_t eval(int p, int q){
-  printf("p:%d,q:%d\n",p,q);
+  
   if(p > q){
-    
+    printf("p:%d,q:%d\n",p,q);
     printf("bad expression!\n");
     return 0;
   }
@@ -267,7 +267,7 @@ uint32_t eval(int p, int q){
       return 0;
     }
     if(tokens[op].type == TK_DEREF){
-      printf("%d,%d",op+1,q);
+      
       uint32_t addr = eval(op+1, q);
       
       return vaddr_read(addr, 4);
