@@ -277,7 +277,7 @@ uint32_t eval(int p, int q){
     else if(tokens[p].type == TK_REG){
       if(strcmp(tokens[p].str,"eax") == 0){
         
-        printf("right,%d\n",cpu.eax);
+        printf("right,%x\n",cpu.eax);
       }
     }
     else{

@@ -52,7 +52,7 @@ static int cmd_info_r(char *args) {
   if(strcmp(args, "r") == 0){
     // printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
-      printf("%u\n",cpu.gpr[i]._32);
+      printf("%x\n",cpu.gpr[i]._32);
     }
   }else{
     printf("invalid input!\n");
