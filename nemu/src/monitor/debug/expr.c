@@ -314,6 +314,9 @@ uint32_t expr(char *e, bool *success) {
       tokens[i].type = TK_DEREF;
     }
   }
+  for(int i = 0; i < nr_token; i++){
+    printf("%d",tokens[i].type);
+  }
   uint32_t result = eval(0, nr_token-1);
   *success = true;
   return result;
