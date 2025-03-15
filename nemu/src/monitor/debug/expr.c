@@ -243,7 +243,7 @@ int find_op(int p, int q){
 
 
 uint32_t eval(int p, int q){
-  printf("p:%d,q:%d",p+1,q);
+  printf("p:%d,q:%d\n",p+1,q);
   if(p > q){
     
     printf("bad expression!\n");
