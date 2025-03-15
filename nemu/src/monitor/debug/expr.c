@@ -193,6 +193,7 @@ int find_op(int p, int q){
   int balance = 0;
   int op = -1;
   bool is_low = false;
+  bool is_mid = false;
   for(int i = p; i <= q; i++){
     
     if(tokens[i].type == '('){
@@ -216,9 +217,17 @@ int find_op(int p, int q){
             break;
           }
           op = i;
+          is_mid = true;
           break;
         case '/':
           if(is_low){
+            break;
+          }
+          op = i;
+          is_mid = true;
+          break;
+        case TK_DEREF:
+          if(is_low || is_mid){
             break;
           }
           op = i;
@@ -246,17 +255,19 @@ uint32_t eval(int p, int q){
       return 0;
     }
   }
-  else if(tokens[p].type == TK_DEREF){
-    printf("this is a pointer!\n");
-    uint32_t temp = eval(p+1, q);
-    // printf("%d\n",vaddr_read(atoi(tokens[q].str), 4));
-    return vaddr_read(temp, 4);
-  }
   else if(check_parentheses(p, q)){
     return eval(p+1, q-1);
   }
   else{
     int op = find_op(p, q);
+    if(op == -1){
+      printf("no op found!\n");
+      return 0;
+    }
+    if(tokens[op].type == TK_DEREF){
+      uint32_t addr = eval(op+1, q);
+      return vaddr_read(addr, 4);
+    }
     uint32_t val1 = eval(p, op - 1);
     uint32_t val2 = eval(op + 1, q);
     switch (tokens[op].type){
