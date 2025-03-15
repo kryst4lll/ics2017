@@ -280,25 +280,25 @@ uint32_t eval(int p, int q){
         // printf("right,%x\n",cpu.eax);
       }
       else if(strcmp(tokens[p].str,"ecx") == 0){
-        return cpu.ecx;
+        return vaddr_read(cpu.ecx, 4);
       }
       else if(strcmp(tokens[p].str,"edx") == 0){
-        return cpu.edx;
+        return vaddr_read(cpu.edx, 4);
       }
       else if(strcmp(tokens[p].str,"ebx") == 0){
-        return cpu.ebx;
+        return vaddr_read(cpu.ebx, 4);
       }
       else if(strcmp(tokens[p].str,"esp") == 0){
-        return cpu.esp;
+        return vaddr_read(cpu.esp, 4);
       }
       else if(strcmp(tokens[p].str,"ebp") == 0){
-        return cpu.ebp;
+        return vaddr_read(cpu.ebp, 4);
       }
       else if(strcmp(tokens[p].str,"esi") == 0){
-        return cpu.esi;
+        return vaddr_read(cpu.esi, 4);
       }
       else if(strcmp(tokens[p].str,"edi") == 0){
-        return cpu.edi;
+        return vaddr_read(cpu.edi, 4);
       }
     }
     else{
