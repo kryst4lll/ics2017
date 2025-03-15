@@ -76,7 +76,7 @@ static int cmd_x(char* args) {
   // 输出内存数据
   for (int i = 0; i < n; i++) {
     uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
-    printf("%08x: %08x\n", addr + i * 4, value);
+    printf("0x%08x: 0x%08x\n", addr + i * 4, value);
   }
 
   return 0;
