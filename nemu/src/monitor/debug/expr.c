@@ -246,10 +246,11 @@ uint32_t eval(int p, int q){
       return 0;
     }
   }
-  else if(p == q-1 && tokens[p].type == TK_DEREF){
-    printf("this is a p!\n");
+  else if(tokens[p].type == TK_DEREF){
+    printf("this is a pointer!\n");
+    uint32_t temp = eval(p+1, q);
     // printf("%d\n",vaddr_read(atoi(tokens[q].str), 4));
-    return vaddr_read(atoi(tokens[q].str), 4);
+    return vaddr_read(temp, 4);
   }
   else if(check_parentheses(p, q)){
     return eval(p+1, q-1);
