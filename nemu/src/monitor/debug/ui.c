@@ -62,7 +62,7 @@ static int cmd_info_r(char *args) {
 }
 
 static int cmd_x(char* args) {
-  printf("The string is: %s\n", args);
+  // printf("The string is: %s\n", args);
   int n;
   uint32_t addr;
   if(sscanf(args, "%d 0x%x", &n, &addr) != 2){
@@ -87,11 +87,11 @@ static int cmd_x(char* args) {
   // bool is_success = false;
   // uint32_t addr = expr(EXPR, &is_success);
 
-  // // 输出内存数据
-  // for (int i = 0; i < n; i++) {
-  //   uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
-  //   printf("0x%08x: %d\n", addr + i * 4, value);
-  // }
+  // 输出内存数据
+  for (int i = 0; i < n; i++) {
+    uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
+    printf("0x%08x: %d\n", addr + i * 4, value);
+  }
 
   return 0;
 }
