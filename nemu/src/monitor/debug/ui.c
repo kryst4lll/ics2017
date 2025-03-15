@@ -62,36 +62,36 @@ static int cmd_info_r(char *args) {
 }
 
 static int cmd_x(char* args) {
-  // printf("The string is: %s\n", args);
-  // int n;
-  // uint32_t addr;
-  // if(sscanf(args, "%d 0x%x", &n, &addr) != 2){
-  //   printf("invalid arguments!");
-  //   return 0;
-  // }
-  // if (n <= 0) {
-  //   printf("Invalid number of units: %d\n", n);
-  //   return 0;
-  // }
-  // 找到空格的位置
-  char *space_pos = strchr(args, ' ');
-  if (space_pos == NULL) {
-    printf("Invalid input format: no space found.\n");
+  printf("The string is: %s\n", args);
+  int n;
+  uint32_t addr;
+  if(sscanf(args, "%d 0x%x", &n, &addr) != 2){
+    printf("invalid arguments!");
     return 0;
   }
-  // 提取 N
-  int n = atoi(args); // 将空格前的部分转换为整数
-
-  // 提取 EXPR
-  char *EXPR = space_pos + 1; // 空格后的部分就是 EXPR
-  bool is_success = false;
-  uint32_t addr = expr(EXPR, &is_success);
-
-  // 输出内存数据
-  for (int i = 0; i < n; i++) {
-    uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
-    printf("0x%08x: %d\n", addr + i * 4, value);
+  if (n <= 0) {
+    printf("Invalid number of units: %d\n", n);
+    return 0;
   }
+  // 找到空格的位置
+  // char *space_pos = strchr(args, ' ');
+  // if (space_pos == NULL) {
+  //   printf("Invalid input format: no space found.\n");
+  //   return 0;
+  // }
+  // // 提取 N
+  // int n = atoi(args); // 将空格前的部分转换为整数
+
+  // // 提取 EXPR
+  // char *EXPR = space_pos + 1; // 空格后的部分就是 EXPR
+  // bool is_success = false;
+  // uint32_t addr = expr(EXPR, &is_success);
+
+  // // 输出内存数据
+  // for (int i = 0; i < n; i++) {
+  //   uint32_t value = vaddr_read(addr + i * 4, 4); // 读取 4 字节
+  //   printf("0x%08x: %d\n", addr + i * 4, value);
+  // }
 
   return 0;
 }
