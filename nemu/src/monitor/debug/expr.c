@@ -15,6 +15,7 @@ enum {
   TK_IDENT,
   TK_DEREF,
   TK_HEX_NUM,
+  TK_REG,
   // '+' = 260,
   // '-' = 261,
   // '*' = 262,
@@ -41,6 +42,7 @@ static struct rule {
   {"0x[0-9a-fA-F]+", TK_HEX_NUM},  // 匹配十六进制数
   {"[0-9]+", TK_NUM},       // 匹配整数
   {"[a-zA-Z_][a-zA-Z0-9_]*", TK_IDENT}, // 匹配标识符
+  {"\\$[a-zA-Z_][a-zA-Z0-9_]*", TK_REG}, // 匹配寄存器变量
   {"\\-", '-'},             // 匹配减号
   {"\\*", '*'},             // 匹配乘号
   {"/", '/'},               // 匹配除号
@@ -126,6 +128,13 @@ static bool make_token(char *e) {
             tokens[nr_token].type = TK_HEX_NUM;
             len = substr_len < 31 ? substr_len : 31;
             strncpy(tokens[nr_token].str, substr_start, len);
+            tokens[nr_token].str[len] = '\0';
+            nr_token++;
+            break;
+          case TK_REG:
+            tokens[nr_token].type = TK_REG;
+            len = substr_len < 31 ? substr_len : 31;
+            strncpy(tokens[nr_token].str, substr_start+1, len);
             tokens[nr_token].str[len] = '\0';
             nr_token++;
             break;
@@ -264,6 +273,11 @@ uint32_t eval(int p, int q){
     }
     else if(tokens[p].type == TK_HEX_NUM){
       return strtol(tokens[p].str, NULL, 16);
+    }
+    else if(tokens[p].type == TK_REG){
+      for(int i = 0; i < strlen(tokens[p].str); i++){
+        printf("%c",tokens[p].str[i]);
+      }
     }
     else{
       printf("invalid type of tokens!\n");

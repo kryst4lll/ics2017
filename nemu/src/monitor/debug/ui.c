@@ -48,7 +48,7 @@ static int cmd_si(char *args) {
   return 0;
 }
 
-static int cmd_info(char *args) {
+static int cmd_info_r(char *args) {
   if(strcmp(args, "r") == 0){
     // printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
@@ -111,7 +111,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute N steps", cmd_si},
-  { "info", "Print regs' status", cmd_info},
+  { "info", "Print regs' status", cmd_info_r},
   { "x", "Scan memory: x N 0xADDR", cmd_x},
   { "p", "evaluate the value of expression", cmd_p}
   /* TODO: Add more commands */
