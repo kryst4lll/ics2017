@@ -265,8 +265,9 @@ uint32_t eval(int p, int q){
       return 0;
     }
     if(tokens[op].type == TK_DEREF){
-      uint32_t addr = eval(op+1, q);
       printf("%d,%d",op+1,q);
+      uint32_t addr = eval(op+1, q);
+      
       return vaddr_read(addr, 4);
     }
     uint32_t val1 = eval(p, op - 1);
