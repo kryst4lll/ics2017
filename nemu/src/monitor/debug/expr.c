@@ -275,7 +275,7 @@ uint32_t eval(int p, int q){
       return strtol(tokens[p].str, NULL, 16);
     }
     else if(tokens[p].type == TK_REG){
-      for(int i = 0; i < strlen(tokens[p].str); i++){
+      for(int i = 0; i < strlen(tokens[p].str)+1; i++){
         printf("%c",tokens[p].str[i]);
       }
     }
