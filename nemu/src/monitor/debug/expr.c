@@ -13,6 +13,7 @@ enum {
   TK_EQ,
   TK_NUM,
   TK_IDENT,
+  TK_DEREF
   // '+' = 260,
   // '-' = 261,
   // '*' = 262,
@@ -245,6 +246,9 @@ uint32_t eval(int p, int q){
       return 0;
     }
   }
+  else if(p == q-1 && tokens[p].type == TK_DEREF){
+    return vaddr_read(atoi(tokens[q].str), 4);
+  }
   else if(check_parentheses(p, q)){
     return eval(p+1, q-1);
   }
@@ -287,6 +291,11 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  for(int i = 0; i < nr_token; i++){
+    if(tokens[i].type == '*' && (i == 0 || tokens[i-1].type == ('+'||'-'||'*'||'/'))){
+      tokens[i].type = TK_DEREF;
+    }
+  }
   uint32_t result = eval(0, nr_token-1);
   *success = true;
   return result;
