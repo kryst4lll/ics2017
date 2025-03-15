@@ -38,8 +38,8 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},         // equal
-  {"[0-9]+", TK_NUM},       // 匹配整数
   {"0x[0-9a-fA-F]+", TK_HEX_NUM},  // 匹配十六进制数
+  {"[0-9]+", TK_NUM},       // 匹配整数
   {"[a-zA-Z_][a-zA-Z0-9_]*", TK_IDENT}, // 匹配标识符
   {"\\-", '-'},             // 匹配减号
   {"\\*", '*'},             // 匹配乘号
