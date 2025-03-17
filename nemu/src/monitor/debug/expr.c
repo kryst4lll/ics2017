@@ -311,6 +311,9 @@ uint32_t eval(int p, int q){
       else if(strcmp(tokens[p].str,"edi") == 0){
         return vaddr_read(cpu.edi, 4);
       }
+      else if(strcmp(tokens[p].str,"eip") == 0){
+        return cpu.eip;
+      }
     }
     else{
       printf("invalid type of tokens!\n");
