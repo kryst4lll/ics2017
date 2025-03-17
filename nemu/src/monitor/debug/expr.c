@@ -339,7 +339,7 @@ uint32_t eval(int p, int q){
       return vaddr_read(addr, 4);
     }
     uint32_t val1 = eval(p, op - 1);
-    printf("$$$$\n");
+    printf("%d,%d\n",p,op-1);
     uint32_t val2 = eval(op + 1, q);
     switch (tokens[op].type){
     case TK_EQ:
