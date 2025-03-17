@@ -45,8 +45,8 @@ WP* new_wp(char* e){
       head->tail = newWp;
     }
     
-    printf("The head number is: %d\n", head->NO);
-    printf("The head string is: %s\n", head->expr);
+    // printf("The head number is: %d\n", head->NO);
+    // printf("The head string is: %s\n", head->expr);
     return newWp;
   }
   
