@@ -280,7 +280,7 @@ uint32_t eval(int p, int q){
   }
   else if(p == q){
     // printf("11\n");
-    printf("%s\n",tokens[p].str);
+    // printf("%s\n",tokens[p].str);
     if(tokens[p].type == TK_NUM){
       return atoi(tokens[p].str);
     }
