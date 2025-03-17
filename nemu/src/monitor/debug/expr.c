@@ -312,7 +312,7 @@ uint32_t eval(int p, int q){
         return vaddr_read(cpu.edi, 4);
       }
       else if(strcmp(tokens[p].str,"eip") == 0){
-        return (int)cpu.eip;
+        return cpu.eip;
       }
     }
     else{
@@ -344,6 +344,8 @@ uint32_t eval(int p, int q){
       return val1 == val2;
       break;
     case '+':
+    printf("%u\n",val1);
+    printf("%u\n",val1);
       return val1 + val2;
       break;
     case '-':
