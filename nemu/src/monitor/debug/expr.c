@@ -279,7 +279,7 @@ uint32_t eval(int p, int q){
     return 0;
   }
   else if(p == q){
-    printf("11\n");
+    // printf("11\n");
     printf("%s\n",tokens[p].str);
     if(tokens[p].type == TK_NUM){
       return atoi(tokens[p].str);
@@ -294,7 +294,7 @@ uint32_t eval(int p, int q){
         // printf("right,%x\n",cpu.eax);
       }
       else if(strcmp(tokens[p].str,"ecx") == 0){
-        printf("111\n");
+        // printf("111\n");
         return vaddr_read(cpu.ecx, 4);
       }
       else if(strcmp(tokens[p].str,"edx") == 0){
@@ -316,7 +316,7 @@ uint32_t eval(int p, int q){
         return vaddr_read(cpu.edi, 4);
       }
       else if(strcmp(tokens[p].str,"eip") == 0){
-        printf("1111\n");
+        // printf("1111\n");
         return cpu.eip;
       }else{
         printf("no reg matched!\n");
