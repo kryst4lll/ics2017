@@ -288,7 +288,7 @@ uint32_t eval(int p, int q){
     else if(tokens[p].type == TK_REG){
       if(strcmp(tokens[p].str,"eax") == 0){
         return vaddr_read(cpu.eax, 4);
-        // printf("right,%x\n",cpu.eax);
+        printf("right,%x\n",cpu.eax);
       }
       else if(strcmp(tokens[p].str,"ecx") == 0){
         return vaddr_read(cpu.ecx, 4);
