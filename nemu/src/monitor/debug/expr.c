@@ -212,6 +212,7 @@ int find_op(int p, int q){
   int op = -1;
   bool is_low = false;
   bool is_mid = false;
+  bool is_eq = false;
   for(int i = p; i <= q; i++){
     
     if(tokens[i].type == '('){
@@ -222,30 +223,40 @@ int find_op(int p, int q){
     }
     else if(balance == 0){
       switch(tokens[i].type){
+        case TK_EQ:
+          op = i;
+          is_eq = true;
+          break;
         case '+':
+          if(is_eq){
+            break;
+          }
           is_low = true;
           op = i;
           break;
         case '-':
+          if(is_eq){
+            break;
+          }
           is_low = true;
           op = i;
           break;
         case '*':
-          if(is_low){
+          if(is_low || is_eq){
             break;
           }
           op = i;
           is_mid = true;
           break;
         case '/':
-          if(is_low){
+          if(is_low || is_eq){
             break;
           }
           op = i;
           is_mid = true;
           break;
         case TK_DEREF:
-          if(is_low || is_mid){
+          if(is_low || is_mid || is_eq){
             break;
           }
           op = i;
@@ -326,6 +337,9 @@ uint32_t eval(int p, int q){
     uint32_t val1 = eval(p, op - 1);
     uint32_t val2 = eval(op + 1, q);
     switch (tokens[op].type){
+    case TK_EQ:
+      return val1 == val2;
+      break;
     case '+':
       return val1 + val2;
       break;
