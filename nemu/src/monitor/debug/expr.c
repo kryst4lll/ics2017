@@ -291,6 +291,7 @@ uint32_t eval(int p, int q){
         // printf("right,%x\n",cpu.eax);
       }
       else if(strcmp(tokens[p].str,"ecx") == 0){
+        printf("111\n");
         return vaddr_read(cpu.ecx, 4);
       }
       else if(strcmp(tokens[p].str,"edx") == 0){
