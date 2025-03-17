@@ -34,6 +34,7 @@ WP* new_wp(char* e){
     newWp->next = NULL;
     newWp->expr = e;
     if(head == NULL){
+      printf("########\n");
       head = newWp;
       head->tail = newWp;
     }else{
