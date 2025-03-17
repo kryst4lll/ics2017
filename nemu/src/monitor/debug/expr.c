@@ -324,6 +324,7 @@ uint32_t eval(int p, int q){
     return eval(p+1, q-1);
   }
   else{
+    printf("$$$$\n");
     int op = find_op(p, q);
     if(op == -1){
       printf("no op found!\n");
