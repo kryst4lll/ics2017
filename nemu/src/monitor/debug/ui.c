@@ -126,7 +126,9 @@ static int cmd_w(char *args) {
     assert(0);
   }
   wp->expr = args;
+  printf("The string is: %s\n", wp->expr);
   wp->value = expr(args, &is_success);
+  printf("The string is: %d\n", wp->value);
   // 输出提示信息
   if(is_success){
     printf("Watchpoint %d: %s\n", wp->NO, wp->expr);
