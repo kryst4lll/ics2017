@@ -48,14 +48,27 @@ static int cmd_si(char *args) {
   return 0;
 }
 
-static int cmd_info_r(char *args) {
+static int cmd_info(char *args) {
   if(strcmp(args, "r") == 0){
     // printf("The string is: %s\n", args);
     for(int i = 0; i < 8; i++){
       // printf("%d\n",vaddr_read(cpu.gpr[i]._32, 4));
       printf("%x\n",cpu.gpr[i]._32);
     }
-  }else{
+  }
+  else if(strcmp(args, "w") == 0){
+    if(head == NULL){
+      printf("No valid watchpoints!\n");
+      return 0;
+    }
+    printf("Watchpoints:\n");
+    WP *cur = head;
+    while(cur != NULL){
+      printf("  %d: %s = %u\n", cur->NO, cur->expr, cur->value);
+      cur = cur->next;
+    }
+  }
+  else{
     printf("invalid input!\n");
   }
   return 0;
@@ -127,9 +140,9 @@ static int cmd_w(char *args) {
   }
 
   // wp->expr = args;
-  printf("The string is: %s\n", wp->expr);
+  // printf("The string is: %s\n", wp->expr);
   wp->value = expr(args, &is_success);
-  printf("The value is: %d\n", wp->value);
+  // printf("The value is: %d\n", wp->value);
   // 输出提示信息
   if(is_success){
     printf("Watchpoint %d: %s\n", wp->NO, wp->expr);
@@ -150,7 +163,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute N steps", cmd_si},
-  { "info", "Print regs' status", cmd_info_r},
+  { "info", "Print regs' status(r) or  watchpoint information(w)", cmd_info},
   { "x", "Scan memory: x N 0xADDR", cmd_x},
   { "p", "evaluate the value of expression", cmd_p},
   { "w", "Set a watchpoint: w EXPR", cmd_w},
