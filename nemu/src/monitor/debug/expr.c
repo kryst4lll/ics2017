@@ -286,7 +286,6 @@ uint32_t eval(int p, int q){
       return strtol(tokens[p].str, NULL, 16);
     }
     else if(tokens[p].type == TK_REG){
-      printf("111\n");
       if(strcmp(tokens[p].str,"eax") == 0){
         return vaddr_read(cpu.eax, 4);
         // printf("right,%x\n",cpu.eax);
@@ -313,6 +312,7 @@ uint32_t eval(int p, int q){
         return vaddr_read(cpu.edi, 4);
       }
       else if(strcmp(tokens[p].str,"eip") == 0){
+        printf("1111\n");
         return cpu.eip;
       }
     }
