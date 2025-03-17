@@ -152,6 +152,29 @@ static int cmd_w(char *args) {
   return 0;
 }
 
+static int cmd_d(char *args){
+  int no = 0;
+  if(args){
+    no = atoi(args);
+    if(no <= 0){
+      printf("invalid steps!\n");  
+    }
+  }else{
+    printf("no valid input!\n");
+  }
+  WP *cur = head;
+  while(cur != NULL){
+    if(cur->NO == no){
+      free_wp(cur);
+      break;
+    }
+    cur = cur->next;
+  }
+  printf("the NO  not exists!\n");
+
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -167,6 +190,7 @@ static struct {
   { "x", "Scan memory: x N 0xADDR", cmd_x},
   { "p", "evaluate the value of expression", cmd_p},
   { "w", "Set a watchpoint: w EXPR", cmd_w},
+  { "d", "Delete a watchpoint: d N", cmd_d},
   /* TODO: Add more commands */
 
 };

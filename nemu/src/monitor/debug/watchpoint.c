@@ -58,7 +58,8 @@ void free_wp(WP* wp){
   if(cur == wp){
     free_->tail->next = wp;
     free_->tail = wp;
-    cur = cur->next;
+    head = cur->next;
+    return;
   }
   while(cur != NULL){
     if(cur->next == wp){
