@@ -26,6 +26,11 @@ WP* new_wp(char* e){
   printf("create a new wp\n");
   if(free_ != NULL){
     WP* newWp = free_;
+    if(free_->next != NULL){
+      free_->next->tail = free_->tail;
+      free_ = free_->next;
+    }
+    
     newWp->next = NULL;
     newWp->expr = e;
     if(head == NULL){
@@ -35,13 +40,7 @@ WP* new_wp(char* e){
       head->tail->next = newWp;
       head->tail = newWp;
     }
-    if(free_->next != NULL){
-      printf("##########\n");
-      free_->next->tail = free_->tail;
-      free_ = free_->next;
-    }else{
-      free_ = NULL;
-    }
+    
     printf("The head number is: %d\n", head->NO);
     printf("The head string is: %s\n", head->expr);
     return newWp;
