@@ -367,7 +367,7 @@ uint32_t eval(int p, int q){
       assert(0);
       break;
     }
-
+    printf("##$$\n");
   }
   printf("####\n");
   return 0;
