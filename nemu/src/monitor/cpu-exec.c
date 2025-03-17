@@ -1,6 +1,6 @@
 #include "nemu.h"
 #include "monitor/monitor.h"
-#include "monitor/watchpoint.h"
+// #include "monitor/watchpoint.h"
 #include "/home/yyh/ics2017/nemu/src/monitor/debug/watchpoint.c"
 
 /* The assembly code of instructions executed is only output to the screen
