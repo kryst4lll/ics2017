@@ -349,8 +349,8 @@ uint32_t eval(int p, int q){
       return val1 == val2;
       break;
     case '+':
-    printf("%u\n",val1);
-    printf("%u\n",val2);
+    // printf("%u\n",val1);
+    // printf("%u\n",val2);
       return val1 + val2;
       break;
     case '-':
