@@ -121,12 +121,12 @@ static int cmd_w(char *args) {
   }
   bool is_success = false;
   // 调用 new_wp 创建监视点
-  WP *wp = new_wp();
+  WP *wp = new_wp(args);
   if (wp == NULL) {
     assert(0);
   }
 
-  wp->expr = args;
+  // wp->expr = args;
   printf("The string is: %s\n", wp->expr);
   wp->value = expr(args, &is_success);
   printf("The value is: %d\n", wp->value);

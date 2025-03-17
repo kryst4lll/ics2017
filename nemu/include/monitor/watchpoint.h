@@ -13,7 +13,7 @@ typedef struct watchpoint {
   uint32_t value;
 } WP;
 
-WP* new_wp();
+WP* new_wp(char* e);
 void free_wp(WP* wp);
 
 extern WP *head;

@@ -22,11 +22,12 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP* new_wp(){
+WP* new_wp(char* e){
 
   if(free_ != NULL){
     WP* newWp = free_;
     newWp->next = NULL;
+    newWp->expr = e;
     if(head == NULL){
       head = newWp;
       head->tail = newWp;
