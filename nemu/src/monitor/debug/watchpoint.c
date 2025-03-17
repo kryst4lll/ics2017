@@ -34,9 +34,9 @@ WP* new_wp(char* e){
     }
 
     newWp->next = NULL;
-    newWp->expr = e;
-    // strncpy(newWp->expr, e, sizeof(newWp->expr) - 1); // 复制字符串
-    // newWp->expr[sizeof(newWp->expr) - 1] = '\0'; // 确保字符串以 \0 结尾
+    // newWp->expr = e;
+    strncpy(newWp->expr, e, sizeof(newWp->expr) - 1); // 复制字符串
+    newWp->expr[sizeof(newWp->expr) - 1] = '\0'; // 确保字符串以 \0 结尾
     if(head == NULL){
       head = newWp;
       head->tail = newWp;
