@@ -134,7 +134,7 @@ static bool make_token(char *e) {
           case TK_REG:
             tokens[nr_token].type = TK_REG;
             len = substr_len < 31 ? substr_len : 31;
-            strncpy(tokens[nr_token].str, substr_start+1, len);
+            strncpy(tokens[nr_token].str, substr_start+1, len-1);
             tokens[nr_token].str[len] = '\0';
             nr_token++;
             break;
