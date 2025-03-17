@@ -290,31 +290,31 @@ uint32_t eval(int p, int q){
     else if(tokens[p].type == TK_REG){
       // printf("1\n");
       if(strcmp(tokens[p].str,"eax") == 0){
-        printf("%u\n",cpu.eax);
-        return vaddr_read(cpu.eax, 4);
+        // printf("%u\n",cpu.eax);
+        return cpu.eax;
         // printf("right,%x\n",cpu.eax);
       }
       else if(strcmp(tokens[p].str,"ecx") == 0){
         // printf("111\n");
-        return vaddr_read(cpu.ecx, 4);
+        return cpu.ecx;
       }
       else if(strcmp(tokens[p].str,"edx") == 0){
-        return vaddr_read(cpu.edx, 4);
+        return cpu.edx;
       }
       else if(strcmp(tokens[p].str,"ebx") == 0){
-        return vaddr_read(cpu.ebx, 4);
+        return cpu.ebx;
       }
       else if(strcmp(tokens[p].str,"esp") == 0){
-        return vaddr_read(cpu.esp, 4);
+        return cpu.esp;
       }
       else if(strcmp(tokens[p].str,"ebp") == 0){
-        return vaddr_read(cpu.ebp, 4);
+        return cpu.ebp;
       }
       else if(strcmp(tokens[p].str,"esi") == 0){
-        return vaddr_read(cpu.esi, 4);
+        return cpu.esi;
       }
       else if(strcmp(tokens[p].str,"edi") == 0){
-        return vaddr_read(cpu.edi, 4);
+        return cpu.edi;
       }
       else if(strcmp(tokens[p].str,"eip") == 0){
         // printf("1111\n");
