@@ -156,8 +156,8 @@ static int cmd_d(char *args){
   int no = 0;
   if(args){
     no = atoi(args);
-    if(no <= 0){
-      printf("invalid steps!\n");  
+    if(no < 0){
+      printf("invalid NO!\n");  
     }
   }else{
     printf("no valid input!\n");
@@ -166,11 +166,11 @@ static int cmd_d(char *args){
   while(cur != NULL){
     if(cur->NO == no){
       free_wp(cur);
-      break;
+      return 0;
     }
     cur = cur->next;
   }
-  printf("the NO  not exists!\n");
+  printf("the NO not exists!\n");
 
   return 0;
 }
