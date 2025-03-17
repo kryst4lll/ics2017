@@ -9,7 +9,7 @@ typedef struct watchpoint {
 
   /* TODO: Add more members if necessary */
   struct watchpoint *tail;
-  char *expr;              // 监视的表达式
+  char expr[32];              // 监视的表达式
   uint32_t value;
 } WP;
 
