@@ -279,6 +279,7 @@ uint32_t eval(int p, int q){
     return 0;
   }
   else if(p == q){
+    printf("11\n");
     if(tokens[p].type == TK_NUM){
       return atoi(tokens[p].str);
     }
