@@ -114,6 +114,28 @@ static int cmd_p(char *args){
   return 0;
 }
 
+static int cmd_w(char *args) {
+  if (args == NULL || strlen(args) == 0) {
+    printf("Usage: w EXPR\n");
+    return 0;
+  }
+  bool is_success = false;
+  // 调用 new_wp 创建监视点
+  WP *wp = new_wp();
+  if (wp == NULL) {
+    assert(0);
+  }
+  wp->expr = args;
+  wp->value = expr(args, &is_success);
+  // 输出提示信息
+  if(is_success){
+    printf("Watchpoint %d: %s\n", wp->NO, wp->expr);
+  }else{
+    printf("Failed to evaluate expression: %s\n", args);
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -127,7 +149,8 @@ static struct {
   { "si", "Execute N steps", cmd_si},
   { "info", "Print regs' status", cmd_info_r},
   { "x", "Scan memory: x N 0xADDR", cmd_x},
-  { "p", "evaluate the value of expression", cmd_p}
+  { "p", "evaluate the value of expression", cmd_p},
+  { "w", "Set a watchpoint: w EXPR", cmd_w},
   /* TODO: Add more commands */
 
 };
