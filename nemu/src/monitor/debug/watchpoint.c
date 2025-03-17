@@ -23,7 +23,7 @@ void init_wp_pool() {
 /* TODO: Implement the functionality of watchpoint */
 
 WP* new_wp(char* e){
-
+  printf("create a new wp\n");
   if(free_ != NULL){
     WP* newWp = free_;
     newWp->next = NULL;
