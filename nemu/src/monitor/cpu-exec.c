@@ -35,6 +35,7 @@ void cpu_exec(uint64_t n) {
     /* 检查监视点 */
     WP *wp = head;
     while (wp != NULL) {
+      printf("The number is: %d\n", wp->NO);
       // 对监视点的表达式进行求值
       bool success;
       uint32_t new_value = expr(wp->expr, &success);
