@@ -280,6 +280,7 @@ uint32_t eval(int p, int q){
   }
   else if(p == q){
     printf("11\n");
+    printf("%s\n",tokens[p].str);
     if(tokens[p].type == TK_NUM){
       return atoi(tokens[p].str);
     }
@@ -317,6 +318,9 @@ uint32_t eval(int p, int q){
       else if(strcmp(tokens[p].str,"eip") == 0){
         printf("1111\n");
         return cpu.eip;
+      }else{
+        printf("no reg matched!\n");
+        return 0;
       }
     }
     else{
