@@ -36,6 +36,7 @@ WP* new_wp(char* e){
       head->tail = newWp;
     }
     if(free_->next != NULL){
+      printf("##########\n");
       free_->next->tail = free_->tail;
       free_ = free_->next;
     }else{
