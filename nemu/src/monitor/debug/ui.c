@@ -125,6 +125,7 @@ static int cmd_w(char *args) {
   if (wp == NULL) {
     assert(0);
   }
+  printf("The number is: %d\n", wp->NO);
   wp->expr = args;
   printf("The string is: %s\n", wp->expr);
   wp->value = expr(args, &is_success);

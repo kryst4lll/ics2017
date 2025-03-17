@@ -33,8 +33,12 @@ WP* new_wp(){
       head->tail->next = newWp;
       head->tail = newWp;
     }
-    free_->next->tail = free_->tail;
-    free_ = free_->next;
+    if(free_->next != NULL){
+      free_->next->tail = free_->tail;
+      free_ = free_->next;
+    }else{
+      free_ = NULL;
+    }
     return newWp;
   }
   
