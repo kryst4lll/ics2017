@@ -324,7 +324,7 @@ uint32_t eval(int p, int q){
     return eval(p+1, q-1);
   }
   else{
-    printf("$$$$\n");
+    
     int op = find_op(p, q);
     if(op == -1){
       printf("no op found!\n");
@@ -339,6 +339,7 @@ uint32_t eval(int p, int q){
       return vaddr_read(addr, 4);
     }
     uint32_t val1 = eval(p, op - 1);
+    printf("$$$$\n");
     uint32_t val2 = eval(op + 1, q);
     switch (tokens[op].type){
     case TK_EQ:
@@ -367,7 +368,7 @@ uint32_t eval(int p, int q){
       assert(0);
       break;
     }
-    printf("##$$\n");
+
   }
   printf("####\n");
   return 0;
