@@ -396,7 +396,8 @@ uint32_t expr(char *e, bool *success) {
          tokens[i-1].type == '+' || 
          tokens[i-1].type == '-' || 
          tokens[i-1].type == '*' || 
-         tokens[i-1].type == '/')) {
+         tokens[i-1].type == '/' ||
+         tokens[i-1].type == TK_EQ)) {
         tokens[i].type = TK_DEREF;
     }
   }
