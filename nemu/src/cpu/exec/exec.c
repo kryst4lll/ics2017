@@ -39,111 +39,111 @@ static make_EHelper(name) { \
   idex(eip, &concat(opcode_table_, name)[decoding.ext_opcode]); \
 }
 
-/////////////////////////////////////////////////////////////control.c
-make_EHelper(jmp) {
-  // the target address is calculated at the decode stage
-  decoding.is_jmp = 1;
+// /////////////////////////////////////////////////////////////control.c
+// make_EHelper(jmp) {
+//   // the target address is calculated at the decode stage
+//   decoding.is_jmp = 1;
 
-  print_asm("jmp %x", decoding.jmp_eip);
-}
+//   print_asm("jmp %x", decoding.jmp_eip);
+// }
 
-make_EHelper(jcc) {
-  // the target address is calculated at the decode stage
-  uint8_t subcode = decoding.opcode & 0xf;
-  rtl_setcc(&t2, subcode);
-  decoding.is_jmp = t2;
+// make_EHelper(jcc) {
+//   // the target address is calculated at the decode stage
+//   uint8_t subcode = decoding.opcode & 0xf;
+//   rtl_setcc(&t2, subcode);
+//   decoding.is_jmp = t2;
 
-  print_asm("j%s %x", get_cc_name(subcode), decoding.jmp_eip);
-}
+//   print_asm("j%s %x", get_cc_name(subcode), decoding.jmp_eip);
+// }
 
-make_EHelper(jmp_rm) {
-  decoding.jmp_eip = id_dest->val;
-  decoding.is_jmp = 1;
+// make_EHelper(jmp_rm) {
+//   decoding.jmp_eip = id_dest->val;
+//   decoding.is_jmp = 1;
 
-  print_asm("jmp *%s", id_dest->str);
-}
+//   print_asm("jmp *%s", id_dest->str);
+// }
 
-make_EHelper(call) {
-  // the target address is calculated at the decode stage
-  //TODO();
-  rtl_push(&decoding.seq_eip);
-  decoding.is_jmp = 1;
-  print_asm("call %x", decoding.jmp_eip);
-}
+// make_EHelper(call) {
+//   // the target address is calculated at the decode stage
+//   //TODO();
+//   rtl_push(&decoding.seq_eip);
+//   decoding.is_jmp = 1;
+//   print_asm("call %x", decoding.jmp_eip);
+// }
 
-make_EHelper(ret) {
-  //TODO();
-  rtl_pop(&t2);              
-  decoding.jmp_eip = t2;      
-  decoding.is_jmp = 1;  
-  print_asm("ret");
-}
+// make_EHelper(ret) {
+//   //TODO();
+//   rtl_pop(&t2);              
+//   decoding.jmp_eip = t2;      
+//   decoding.is_jmp = 1;  
+//   print_asm("ret");
+// }
 
-make_EHelper(call_rm) {
-  //TODO();
-  rtl_push(&decoding.seq_eip);
-  decoding.jmp_eip =id_dest->val;
-  decoding.is_jmp = 1;
-  print_asm("call *%s", id_dest->str);
-}
-//////////////////////////////////////////////////////////////arith.c
-make_EHelper(sub) {
-  //TODO();
-  rtl_sub(&t2, &id_dest->val, &id_src->val);
-  rtl_update_ZFSF(&t2,id_dest->width);
+// make_EHelper(call_rm) {
+//   //TODO();
+//   rtl_push(&decoding.seq_eip);
+//   decoding.jmp_eip =id_dest->val;
+//   decoding.is_jmp = 1;
+//   print_asm("call *%s", id_dest->str);
+// }
+// //////////////////////////////////////////////////////////////arith.c
+// make_EHelper(sub) {
+//   //TODO();
+//   rtl_sub(&t2, &id_dest->val, &id_src->val);
+//   rtl_update_ZFSF(&t2,id_dest->width);
 
-  rtl_sltu(&t0, &id_dest->val, &id_src->val);
-  rtl_set_CF(&t0);
-
-
-  rtl_xor(&t0, &id_dest->val, &id_src->val);
-  rtl_xor(&t1, &id_dest->val, &t2);
-  rtl_and(&t0, &t0, &t1);
-  rtl_msb(&t0, &t0, id_dest->width);
-  rtl_set_OF(&t0);
-  operand_write(id_dest,&t2);
-
-  print_asm_template2(sub);
-}
+//   rtl_sltu(&t0, &id_dest->val, &id_src->val);
+//   rtl_set_CF(&t0);
 
 
-///////////////////////////////////////////////////////////////data-mov.c
-make_EHelper(push) {
-  //TODO();
-  rtl_push(&id_dest->val);
-  print_asm_template1(push);
-}
+//   rtl_xor(&t0, &id_dest->val, &id_src->val);
+//   rtl_xor(&t1, &id_dest->val, &t2);
+//   rtl_and(&t0, &t0, &t1);
+//   rtl_msb(&t0, &t0, id_dest->width);
+//   rtl_set_OF(&t0);
+//   operand_write(id_dest,&t2);
 
-make_EHelper(pop) {
-  //TODO();
-  rtl_pop(&t2);
-  operand_write(id_dest,&t2);
-  print_asm_template1(pop);
-}
+//   print_asm_template2(sub);
+// }
 
 
-///////////////////////////////////////////////////////////////logic.c
-make_EHelper(xor) {
-  //TODO();
-  rtl_xor(&t2, &id_dest->val, &id_src->val);
-  operand_write(id_dest, &t2);
+// ///////////////////////////////////////////////////////////////data-mov.c
+// make_EHelper(push) {
+//   //TODO();
+//   rtl_push(&id_dest->val);
+//   print_asm_template1(push);
+// }
 
-  rtl_update_ZFSF(&t2, id_dest->width);
-  rtl_set_CF(&tzero);
-  rtl_set_OF(&tzero);
-  print_asm_template2(xor);
-}
+// make_EHelper(pop) {
+//   //TODO();
+//   rtl_pop(&t2);
+//   operand_write(id_dest,&t2);
+//   print_asm_template1(pop);
+// }
+
+
+// ///////////////////////////////////////////////////////////////logic.c
+// make_EHelper(xor) {
+//   //TODO();
+//   rtl_xor(&t2, &id_dest->val, &id_src->val);
+//   operand_write(id_dest, &t2);
+
+//   rtl_update_ZFSF(&t2, id_dest->width);
+//   rtl_set_CF(&tzero);
+//   rtl_set_OF(&tzero);
+//   print_asm_template2(xor);
+// }
 
 
 
 
-/////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////
 
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
     EMPTY, EMPTY, EMPTY, EMPTY,
-    EMPTY,EX(sub), EX(xor), EMPTY)
+    EMPTY, EX(sub), EX(xor), EMPTY)
 
   /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
 make_group(gp2,
