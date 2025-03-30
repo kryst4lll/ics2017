@@ -114,6 +114,15 @@ make_EHelper(push) {
   print_asm_template1(push);
 }
 
+make_EHelper(pop) {
+  //TODO();
+  rtl_pop(&t2);
+  operand_write(id_dest,&t2);
+  print_asm_template1(pop);
+}
+
+
+///////////////////////////////////////////////////////////////
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
@@ -170,8 +179,8 @@ opcode_entry opcode_table [512] = {
   /* 0x4c */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x50 */	IDEX(r,push), IDEX(r,push), IDEX(r,push), IDEX(r,push),
   /* 0x54 */	IDEX(r,push), IDEX(r,push), IDEX(r,push), IDEX(r,push),
-  /* 0x58 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x5c */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x58 */	IDEX(r,pop), IDEX(r,pop),IDEX(r,pop), IDEX(r,pop),
+  /* 0x5c */	EMPTY, IDEX(r,pop), IDEX(r,pop), IDEX(r,pop),
   /* 0x60 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x64 */	EMPTY, EMPTY, EX(operand_size), EMPTY,
   /* 0x68 */	EMPTY, EMPTY, EMPTY, EMPTY,
