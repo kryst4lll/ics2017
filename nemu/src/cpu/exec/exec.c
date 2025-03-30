@@ -39,7 +39,7 @@ static make_EHelper(name) { \
   idex(eip, &concat(opcode_table_, name)[decoding.ext_opcode]); \
 }
 
-/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////control.c
 make_EHelper(jmp) {
   // the target address is calculated at the decode stage
   decoding.is_jmp = 1;
@@ -86,7 +86,7 @@ make_EHelper(call_rm) {
   decoding.is_jmp = 1;
   print_asm("call *%s", id_dest->str);
 }
-//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////arith.c
 make_EHelper(sub) {
   //TODO();
   rtl_sub(&t2, &id_dest->val, &id_src->val);
@@ -107,7 +107,13 @@ make_EHelper(sub) {
 }
 
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////data-mov.c
+make_EHelper(push) {
+  //TODO();
+  rtl_push(&id_dest->val);
+  print_asm_template1(push);
+}
+
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
@@ -162,8 +168,8 @@ opcode_entry opcode_table [512] = {
   /* 0x44 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x48 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x4c */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x50 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x54 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x50 */	IDEX(r,push), IDEX(r,push), IDEX(r,push), IDEX(r,push),
+  /* 0x54 */	IDEX(r,push), IDEX(r,push), IDEX(r,push), IDEX(r,push),
   /* 0x58 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x5c */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x60 */	EMPTY, EMPTY, EMPTY, EMPTY,

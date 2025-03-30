@@ -5,11 +5,11 @@ make_EHelper(mov) {
   print_asm_template2(mov);
 }
 
-make_EHelper(push) {
-  TODO();
-
-  print_asm_template1(push);
-}
+// make_EHelper(push) {
+//   //TODO();
+//   rtl_push(&id_dest->val);
+//   print_asm_template1(push);
+// }
 
 make_EHelper(pop) {
   TODO();
