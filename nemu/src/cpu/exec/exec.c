@@ -39,7 +39,7 @@ static make_EHelper(name) { \
   idex(eip, &concat(opcode_table_, name)[decoding.ext_opcode]); \
 }
 
-
+/////////////////////////////////////////////////////////////
 make_EHelper(jmp) {
   // the target address is calculated at the decode stage
   decoding.is_jmp = 1;
@@ -86,7 +86,28 @@ make_EHelper(call_rm) {
   decoding.is_jmp = 1;
   print_asm("call *%s", id_dest->str);
 }
+//////////////////////////////////////////////////////////////
+make_EHelper(sub) {
+  //TODO();
+  rtl_sub(&t2, &id_dest->val, &id_src->val);
+  rtl_update_ZFSF(&t2,id_dest->width);
 
+  rtl_sltu(&t0, &id_dest->val, &id_src->val);
+  rtl_set_CF(&t0);
+
+
+  rtl_xor(&t0, &id_dest->val, &id_src->val);
+  rtl_xor(&t1, &id_dest->val, &t2);
+  rtl_and(&t0, &t0, &t1);
+  rtl_msb(&t0, &t0, id_dest->width);
+  rtl_set_OF(&t0);
+  operand_write(id_dest,&t2);
+
+  print_asm_template2(sub);
+}
+
+
+///////////////////////////////////////////////////////////////
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
@@ -131,8 +152,8 @@ opcode_entry opcode_table [512] = {
   /* 0x1c */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x20 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x24 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x28 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x2c */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x28 */	EMPTY, IDEX(G2E,sub), EMPTY, IDEX(E2G,sub),
+  /* 0x2c */	EMPTY, IDEX(I2a,sub), EMPTY, EMPTY,
   /* 0x30 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x34 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x38 */	EMPTY, EMPTY, EMPTY, EMPTY,
