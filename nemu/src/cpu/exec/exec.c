@@ -39,6 +39,55 @@ static make_EHelper(name) { \
   idex(eip, &concat(opcode_table_, name)[decoding.ext_opcode]); \
 }
 
+
+make_EHelper(jmp) {
+  // the target address is calculated at the decode stage
+  decoding.is_jmp = 1;
+
+  print_asm("jmp %x", decoding.jmp_eip);
+}
+
+make_EHelper(jcc) {
+  // the target address is calculated at the decode stage
+  uint8_t subcode = decoding.opcode & 0xf;
+  rtl_setcc(&t2, subcode);
+  decoding.is_jmp = t2;
+
+  print_asm("j%s %x", get_cc_name(subcode), decoding.jmp_eip);
+}
+
+make_EHelper(jmp_rm) {
+  decoding.jmp_eip = id_dest->val;
+  decoding.is_jmp = 1;
+
+  print_asm("jmp *%s", id_dest->str);
+}
+
+make_EHelper(call) {
+  // the target address is calculated at the decode stage
+  //TODO();
+  rtl_push(&decoding.seq_eip);
+  decoding.is_jmp = 1;
+  print_asm("call %x", decoding.jmp_eip);
+}
+
+make_EHelper(ret) {
+  //TODO();
+  rtl_pop(&t2);              
+  decoding.jmp_eip = t2;      
+  decoding.is_jmp = 1;  
+  print_asm("ret");
+}
+
+make_EHelper(call_rm) {
+  //TODO();
+  rtl_push(&decoding.seq_eip);
+  decoding.jmp_eip =id_dest->val;
+  decoding.is_jmp = 1;
+  print_asm("call *%s", id_dest->str);
+}
+
+
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
     EMPTY, EMPTY, EMPTY, EMPTY,
@@ -130,7 +179,7 @@ opcode_entry opcode_table [512] = {
   /* 0xdc */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xe0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xe4 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xe8 */	IDEX(J,mov), EMPTY, EMPTY, EMPTY,
+  /* 0xe8 */	IDEX(J,call), EMPTY, EMPTY, EMPTY,
   /* 0xec */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xf4 */	EMPTY, EMPTY, IDEXW(E, gp3, 1), IDEX(E, gp3),
