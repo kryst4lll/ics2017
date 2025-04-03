@@ -21,3 +21,4 @@ make_EHelper(lea);
 make_EHelper(and);
 make_EHelper(movsx);
 make_EHelper(movzx);
+make_EHelper(adc);
