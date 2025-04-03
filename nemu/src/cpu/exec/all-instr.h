@@ -18,3 +18,4 @@ make_EHelper(pop);
 make_EHelper(xor);
 make_EHelper(add);
 make_EHelper(lea);
+make_EHelper(and);
