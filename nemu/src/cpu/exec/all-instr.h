@@ -23,3 +23,7 @@ make_EHelper(movsx);
 make_EHelper(movzx);
 make_EHelper(adc);
 make_EHelper(sbb);
+make_EHelper(mul);
+make_EHelper(imul1);
+make_EHelper(imul2);
+make_EHelper(imul3);
