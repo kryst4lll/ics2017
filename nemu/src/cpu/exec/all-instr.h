@@ -32,3 +32,4 @@ make_EHelper(idiv);
 make_EHelper(setcc);
 make_EHelper(nop);
 make_EHelper(cmp);
+make_EHelper(test);
