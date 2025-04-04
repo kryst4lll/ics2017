@@ -43,3 +43,4 @@ make_EHelper(call_rm);
 make_EHelper(shr);
 make_EHelper(neg);
 make_EHelper(pusha);
+make_EHelper(popa);
