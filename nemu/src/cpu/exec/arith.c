@@ -83,7 +83,14 @@ make_EHelper(dec) {
 }
 
 make_EHelper(neg) {
-  TODO();
+  //TODO();
+  rtl_eqi(&t0, &id_dest->val, 0);  
+  rtl_set_CF(&t0);                 
+
+  rtl_sub(&t2, &tzero, &id_dest->val);  
+  operand_write(id_dest, &t1);         
+
+  rtl_update_ZFSF(&t1, id_dest->width);  
 
   print_asm_template1(neg);
 }
