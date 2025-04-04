@@ -60,7 +60,16 @@ make_EHelper(inc) {
 }
 
 make_EHelper(dec) {
-  TODO();
+  //TODO();
+  rtl_subi(&t2, &id_dest->val, 1);
+  operand_write(id_dest,&t2);
+
+  rtl_update_ZFSF(&t2,id_dest->width);
+  rtl_sltui(&t0, &id_dest->val, 1);
+  rtl_set_CF(&t0);
+
+  rtl_eqi(&t0, &t2, 0x00000000);
+  rtl_set_OF(&t0);
 
   print_asm_template1(dec);
 }
