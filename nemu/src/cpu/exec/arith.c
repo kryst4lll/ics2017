@@ -55,6 +55,10 @@ make_EHelper(cmp) {
 
 make_EHelper(inc) {
   //TODO();
+  rtl_mv(&t2, &id_dest->val);
+  rtl_eqi(&t0, &t2, 0x7fffffff);
+  rtl_set_OF(&t0);
+
   rtl_addi(&t2, &id_dest->val, 1);
   operand_write(id_dest,&t2);
 
@@ -69,7 +73,7 @@ make_EHelper(dec) {
   rtl_mv(&t2, &id_dest->val);
   rtl_eqi(&t0, &t2, 0xffffffff);
   rtl_set_OF(&t0);
-  
+
   rtl_subi(&t2, &id_dest->val, 1);
   operand_write(id_dest,&t2);
 
