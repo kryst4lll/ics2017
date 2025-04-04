@@ -44,3 +44,4 @@ make_EHelper(shr);
 make_EHelper(neg);
 make_EHelper(pusha);
 make_EHelper(popa);
+make_EHelper(cwtl);
