@@ -69,16 +69,24 @@ typedef struct {
   vaddr_t eip;
   union{
     struct EFLAGS{
-      uint32_t CF : 1;
-      uint32_t _1 : 1;
-      uint32_t : 4;
-      uint32_t ZF : 1;
-      uint32_t SF : 1;
-      uint32_t : 1;
-      uint32_t IF : 1;
-      uint32_t  : 1;
-      uint32_t OF : 1;
-      uint32_t : 20;
+    uint32_t CF : 1;
+    uint32_t _1 : 1;
+    uint32_t PF : 1;
+    uint32_t _3 : 1;
+    uint32_t AF : 1;
+    uint32_t _5 : 1;
+    uint32_t ZF : 1;
+    uint32_t SF : 1;
+    uint32_t TF : 1;
+    uint32_t IF : 1;
+    uint32_t DF : 1;
+    uint32_t OF : 1;
+    uint32_t IOPL : 2;  // 新增 IOPL 字段（bit 12-13）
+    uint32_t NT : 1;
+    uint32_t _15 : 1;
+    uint32_t RF : 1;
+    uint32_t VM : 1;    // 新增 VM 字段（bit 17）
+    uint32_t : 14;
     }eflags;
     uint32_t eflags_val;
   };
