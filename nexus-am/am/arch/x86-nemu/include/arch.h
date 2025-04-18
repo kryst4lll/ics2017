@@ -16,13 +16,12 @@ struct _RegSet {
   uintptr_t ecx;     
   uintptr_t eax;   
 
-  uintptr_t eip;      
-  uintptr_t cs;       
-  uintptr_t eflags;
-
   int irq; 
   uintptr_t error_code;
 
+  uintptr_t eip;      
+  uintptr_t cs;       
+  uintptr_t eflags;
 };
 
 #define SYSCALL_ARG1(r) r->eax
