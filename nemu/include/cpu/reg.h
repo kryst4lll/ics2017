@@ -85,7 +85,7 @@ typedef struct {
   rtlreg_t cs;
 
   struct IDTR{
-    uint16_t limit;
+    uint32_t limit;
     uint32_t base;
   }idtr;
 
