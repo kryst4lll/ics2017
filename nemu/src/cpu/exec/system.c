@@ -9,7 +9,7 @@ make_EHelper(lidt) {
   //TODO();
   cpu.idtr.limit = vaddr_read(id_dest->val, 2);
   cpu.idtr.base = vaddr_read(id_dest->val + 2, 4);
-  printf("%d,%d\n",cpu.idtr.limit,cpu.idtr.base);
+  // printf("%d,%d\n",cpu.idtr.limit,cpu.idtr.base);
 
   print_asm_template1(lidt);
 }
