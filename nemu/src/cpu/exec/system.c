@@ -4,7 +4,13 @@ void diff_test_skip_qemu();
 void diff_test_skip_nemu();
 
 make_EHelper(lidt) {
-  TODO();
+  //TODO();
+  uint32_t limit = instr_fetch(eip, 2);
+  uint32_t base = instr_fetch(eip + 2, 4);
+  cpu.idtr.limit = limit;
+  cpu.idtr.base = base;
+
+  rtl_addi(&cpu.eip, &cpu.eip, 6);
 
   print_asm_template1(lidt);
 }
