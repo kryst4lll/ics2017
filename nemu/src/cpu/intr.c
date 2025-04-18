@@ -7,7 +7,19 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
    */
 
   //TODO();
-  
+  memcpy(&t0, &cpu.eflags, sizeof(cpu.eflags));
+  rtl_push(&t0);
+  rtl_push(&cpu.cs);
+  rtl_li(&t0, ret_addr);
+  rtl_push(&t0);
+
+  uint32_t offset_low = vaddr_read(cpu.idtr.base + NO*8, 2);
+  uint32_t offset_high = vaddr_read(cpu.idtr.base + NO*8 + 6, 2);
+  uint32_t offset = offset_low + (offset_high << 16);
+
+  decoding.jmp_eip = offset;
+  decoding.is_jmp = true;
+
 }
 
 void dev_raise_intr() {
