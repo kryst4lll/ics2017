@@ -13,7 +13,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   rtl_li(&t0, ret_addr);
   rtl_push(&t0);
 
-  printf("%d,%d\n",cpu.idtr.base + NO*8, NO*8);
+  printf("%d,%d\n",cpu.idtr.base, NO*8);
   uint32_t offset_low = vaddr_read(cpu.idtr.base + NO*8, 2);
   uint32_t offset_high = vaddr_read(cpu.idtr.base + NO*8 + 6, 2);
   uint32_t offset = offset_low + (offset_high << 16);
