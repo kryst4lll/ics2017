@@ -7,12 +7,9 @@ extern void raise_intr(uint8_t NO, vaddr_t ret_addr);
 
 make_EHelper(lidt) {
   //TODO();
-  uint32_t limit = instr_fetch(eip, 2);
-  uint32_t base = instr_fetch(eip + 2, 4);
-  cpu.idtr.limit = limit;
-  cpu.idtr.base = base;
+  cpu.idtr.limit = vaddr_read(id_dest->val, 2);
+  cpu.idtr.base = vaddr_read(id_dest->val + 2, 4);
 
-  rtl_addi(&cpu.eip, &cpu.eip, 6);
 
   print_asm_template1(lidt);
 }
