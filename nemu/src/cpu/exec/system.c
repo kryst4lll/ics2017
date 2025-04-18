@@ -7,7 +7,10 @@ extern void raise_intr(uint8_t NO, vaddr_t ret_addr);
 
 make_EHelper(lidt) {
   //TODO();
-  cpu.idtr.limit = vaddr_read(id_dest->val, 2);
+  t1 = id_dest->val;
+  rtl_lm(&t0,&t1,2);
+	cpu.idtr.limit = t0;
+
   // cpu.idtr.base = vaddr_read(id_dest->val + 2, 4);
   t1 = id_dest->val + 2;
   rtl_lm(&t0,&t1,4);
