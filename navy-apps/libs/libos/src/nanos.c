@@ -33,7 +33,7 @@ int _write(int fd, void *buf, size_t count){
 
 void *_sbrk(intptr_t increment){
   extern char _end;
-  static uintptr_t current_break = (uint32_t)&_end;
+  extern static uintptr_t current_break = (uint32_t)&_end;
   uintptr_t new_brk = current_break + increment;
   int r = _syscall_(SYS_brk, new_brk, 0, 0);
   if(r == 0){
