@@ -32,15 +32,15 @@ int _write(int fd, void *buf, size_t count){
 
 
 void *_sbrk(intptr_t increment){
-  extern char _end;
-  extern static uintptr_t current_break = (uint32_t)&_end;
-  uintptr_t new_brk = current_break + increment;
-  int r = _syscall_(SYS_brk, new_brk, 0, 0);
-  if(r == 0){
-    uintptr_t old_brk = current_break;
-    current_break = new_brk;
-    return old_brk;
-  }
+  // extern char _end;
+  // extern static uintptr_t current_break = (uint32_t)&_end;
+  // uintptr_t new_brk = current_break + increment;
+  // int r = _syscall_(SYS_brk, new_brk, 0, 0);
+  // if(r == 0){
+  //   uintptr_t old_brk = current_break;
+  //   current_break = new_brk;
+  //   return old_brk;
+  // }
 
   return (void *)-1;
 }
