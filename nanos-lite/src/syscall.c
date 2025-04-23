@@ -10,6 +10,8 @@ int sys_exit(int code){
   return 0;
 }
 
+extern ssize_t fs_write(int fd, const void *buf, size_t len);
+
 int sys_write(int fd, const void *buf, size_t count){
   if(fd == 1 || fd == 2){
     for(int i = 0; i < count; i++){
@@ -17,6 +19,10 @@ int sys_write(int fd, const void *buf, size_t count){
     }
     return count;
   }
+  else if(fd > 3){
+    return fs_write(fd, buf, count);
+  }
+
   return -1;
 }
 
@@ -51,6 +57,11 @@ int sys_close(int fd){
   return fs_close(fd);
 }
 
+off_t fs_leek(int fd, off_t offset, int whence);
+
+int sys_lseek(int fd, off_t offset, int whence){
+  return fs_leek(fd, offset, whence);
+}
 
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
@@ -81,6 +92,9 @@ _RegSet* do_syscall(_RegSet *r) {
     case SYS_close:
       SYSCALL_ARG1(r) = sys_close(a[1]);
       break;      
+    case SYS_lseek:
+      SYSCALL_ARG1(r) = sys_lseek(a[1], a[2], a[3]);
+      break;
 
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
