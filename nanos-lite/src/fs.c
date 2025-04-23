@@ -37,11 +37,18 @@ int fs_open(const char *pathname, int flags, int mode){
   return -1;
 }
 
+size_t fs_filesz(int fd) {
+  if(fd < 0 || fd>=NR_FILES){
+    assert(0);
+  }
+  return file_table[fd].size;
+}
+
 void ramdisk_read(void *buf, off_t offset, size_t len);
 
 ssize_t fs_read(int fd, void *buf, size_t len){
   if(fd < 0 || fd >= NR_FILES){
-    return -1;
+    assert(0);
   }
   Finfo * file = &file_table[fd];
   size_t left = file->size - file->open_offset;
