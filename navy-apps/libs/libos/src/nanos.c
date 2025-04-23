@@ -50,11 +50,13 @@ void *_sbrk(intptr_t increment){
 }
 
 int _read(int fd, void *buf, size_t count) {
-  _exit(SYS_read);
+  //_exit(SYS_read);
+  _syscall_(SYS_read, fd, buf, count);
 }
 
 int _close(int fd) {
-  _exit(SYS_close);
+  //_exit(SYS_close);
+  _syscall_(SYS_close, fd, 0, 0);  
 }
 
 off_t _lseek(int fd, off_t offset, int whence) {
