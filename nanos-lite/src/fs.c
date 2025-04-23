@@ -50,6 +50,7 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   if(fd < 0 || fd >= NR_FILES){
     assert(0);
   }
+  
   Finfo * file = &file_table[fd];
   size_t left = file->size - file->open_offset;
   size_t read_len = (len > left) ? left : len;
@@ -61,4 +62,56 @@ ssize_t fs_read(int fd, void *buf, size_t len){
 
 int fs_close(int fd){
   return 0;
+}
+
+extern void ramdisk_write(const void *buf, off_t offset, size_t len);
+
+ssize_t fs_write(int fd, const void *buf, size_t len){
+  if (fd < 0 || fd >= NR_FILES) {
+    assert(0);
+  }
+
+  Finfo *file = &file_table[fd];  
+  size_t left = file->size - file->open_offset;
+  size_t write_len = (len > left) ? left : len;  
+  ramdisk_write(buf, file->disk_offset + file->open_offset, write_len);
+  file->open_offset += write_len;
+
+  return write_len;
+}
+
+off_t fs_leek(int fd, off_t offset, int whence){
+  if(fd < 0 || fd >= NR_FILES){
+    assert(0);
+  }
+
+  Finfo *file = &file_table[fd];
+  off_t new_offset = 0;
+
+  switch (whence)
+  {
+  case SEEK_SET:
+    new_offset = offset;
+    break;
+  case SEEK_CUR:
+    new_offset = file->open_offset + offset;
+    break;
+  case SEEK_END:
+    new_offset = file->size + offset;
+    break;
+
+  default:
+    assert(0);
+    break;
+  }
+
+  if(new_offset < 0){
+    new_offset = 0;
+  }
+  else if(new_offset > file->size){
+    new_offset = file->size;
+  }
+
+  file->open_offset = new_offset;
+  return new_offset;
 }
