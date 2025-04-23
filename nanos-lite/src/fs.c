@@ -36,7 +36,17 @@ int fs_open(const char *filename, int flags, int mode){
   return -1;
 }
 
-// ssize_t fs_read(int fd, void *buf, size_t len){
+void ramdisk_read(void *buf, off_t offset, size_t len);
 
+ssize_t fs_read(int fd, void *buf, size_t len){
+  if(fd < 0 || fd >= NR_FILES){
+    return -1;
+  }
+  Finfo * file = &file_table[fd];
+  size_t left = file->size - file->open_offset;
+  size_t read_len = (len > left) ? left : len;
+  ramdisk_read(buf, file->disk_offset + file->open_offset, read_len);
+  file->open_offset += read_len;
 
-// }
+  return read_len;
+}
