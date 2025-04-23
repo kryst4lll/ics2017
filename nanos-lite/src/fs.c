@@ -51,3 +51,7 @@ ssize_t fs_read(int fd, void *buf, size_t len){
 
   return read_len;
 }
+
+int fs_close(int fd){
+  return 0;
+}
