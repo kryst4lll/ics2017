@@ -33,9 +33,11 @@ int sys_brk(uint32_t addr){
   return -1;
 }
 
-// int sys_open(){
+extern int fs_open(const char *pathname, int flags, int mode);
 
-// }
+int sys_open(const char *pathname){
+  return fs_open(pathname, 0, 0);
+}
 
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
@@ -57,6 +59,9 @@ _RegSet* do_syscall(_RegSet *r) {
     case SYS_brk:
       SYSCALL_ARG1(r) = sys_brk(a[1]);
       break;
+    case SYS_open:
+      SYSCALL_ARG1(r) = sys_open((const char *)a[1]);
+      break;      
 
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
