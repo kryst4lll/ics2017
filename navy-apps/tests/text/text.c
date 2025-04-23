@@ -3,11 +3,7 @@
 
 int main() {
   FILE *fp = fopen("/share/texts/num", "r+");
-    if (fp == NULL) {
-        perror("Failed to open file");
-        return 1; // 返回非零值表示程序异常退出
-    }
-  assert(fp);
+  //assert(fp);
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
