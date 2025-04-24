@@ -67,7 +67,7 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   size_t read_len = (len > left) ? left : len;
   
   if(FD_EVENTS){
-    return events_read(buf, read_len);
+    return events_read(buf, len);
   }
   if(fd == FD_DISPINFO){
     //assert(0);
