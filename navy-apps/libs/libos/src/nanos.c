@@ -23,9 +23,9 @@ void _exit(int status) {
 
 int _open(const char *path, int flags, mode_t mode) {
   //_exit(SYS_open);
-  if(strcmp(path, "/share/texts/num") == 0){
-    assert(0);
-  }
+  // if(strcmp(path, "/share/texts/num") == 0){
+  //   assert(0);
+  // }
   return _syscall_(SYS_open, (uintptr_t)path, flags, mode);
 }
 
