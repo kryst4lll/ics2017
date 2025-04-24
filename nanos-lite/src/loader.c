@@ -13,17 +13,17 @@ extern size_t fs_filesz(int fd);
 
 uintptr_t loader(_Protect *as, const char *filename) {
   //TODO();
-  // size_t len = get_ramdisk_size();
-  // ramdisk_read(DEFAULT_ENTRY, 0, len);
-  int fd = fs_open(filename, 0, 0);
+  size_t len = get_ramdisk_size();
+  ramdisk_read(DEFAULT_ENTRY, 0, len);
+  // int fd = fs_open(filename, 0, 0);
   
-  size_t file_size = fs_filesz(fd);
-  ssize_t read_len = fs_read(fd, DEFAULT_ENTRY, file_size);
+  // size_t file_size = fs_filesz(fd);
+  // ssize_t read_len = fs_read(fd, DEFAULT_ENTRY, file_size);
 
-  if(read_len < 0){
-    assert(0);
-  }
-  fs_close(fd);
+  // if(read_len < 0){
+  //   assert(0);
+  // }
+  // fs_close(fd);
 
   return (uintptr_t)DEFAULT_ENTRY;
 }
