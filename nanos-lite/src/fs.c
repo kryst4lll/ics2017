@@ -66,6 +66,21 @@ int fs_close(int fd){
 }
 
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
+off_t disk_offset(int fd) {
+  assert(fd>=0 && fd<NR_FILES);
+  return file_table[fd].disk_offset;
+}
+off_t get_open_offset(int fd) {
+  assert(fd>=0 && fd<NR_FILES);
+  return file_table[fd].open_offset;
+}
+void set_open_offset(int fd,off_t n) {
+  assert(fd>=0 && fd<NR_FILES);
+  assert(n>=0);
+  if(n>file_table[fd].size)
+    n = file_table[fd].size;
+  file_table[fd].open_offset = n;
+}
 
 ssize_t fs_write(int fd, const void *buf, size_t len){
   if (fd < 0 || fd >= NR_FILES) {
@@ -80,17 +95,7 @@ ssize_t fs_write(int fd, const void *buf, size_t len){
 
   return write_len;
 }
-off_t get_open_offset(int fd) {
-  assert(fd>=0 && fd<NR_FILES);
-  return file_table[fd].open_offset;
-}
-void set_open_offset(int fd,off_t n) {
-  assert(fd>=0 && fd<NR_FILES);
-  assert(n>=0);
-  if(n>file_table[fd].size)
-    n = file_table[fd].size;
-  file_table[fd].open_offset = n;
-}
+
 off_t fs_lseek(int fd, off_t offset, int whence){
   switch(whence) {
     case SEEK_SET:
