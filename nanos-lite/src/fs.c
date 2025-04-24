@@ -66,21 +66,7 @@ int fs_close(int fd){
 }
 
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
-off_t disk_offset(int fd) {
-  assert(fd>=0 && fd<NR_FILES);
-  return file_table[fd].disk_offset;
-}
-off_t get_open_offset(int fd) {
-  assert(fd>=0 && fd<NR_FILES);
-  return file_table[fd].open_offset;
-}
-void set_open_offset(int fd,off_t n) {
-  assert(fd>=0 && fd<NR_FILES);
-  assert(n>=0);
-  if(n>file_table[fd].size)
-    n = file_table[fd].size;
-  file_table[fd].open_offset = n;
-}
+
 ssize_t fs_write(int fd, const void *buf, size_t len){
   if (fd < 0 || fd >= NR_FILES) {
     assert(0);
@@ -94,39 +80,30 @@ ssize_t fs_write(int fd, const void *buf, size_t len){
 
   return write_len;
 }
-
+off_t get_open_offset(int fd) {
+  assert(fd>=0 && fd<NR_FILES);
+  return file_table[fd].open_offset;
+}
+void set_open_offset(int fd,off_t n) {
+  assert(fd>=0 && fd<NR_FILES);
+  assert(n>=0);
+  if(n>file_table[fd].size)
+    n = file_table[fd].size;
+  file_table[fd].open_offset = n;
+}
 off_t fs_lseek(int fd, off_t offset, int whence){
-  if(fd < 0 || fd >= NR_FILES){
-    assert(0);
+  switch(whence) {
+    case SEEK_SET:
+      set_open_offset(fd,offset);
+      return get_open_offset(fd);
+    case SEEK_CUR:
+      set_open_offset(fd,get_open_offset(fd)+offset);
+      return get_open_offset(fd);
+    case SEEK_END:
+      set_open_offset(fd,fs_filesz(fd)+offset);
+      return get_open_offset(fd);
+    default:
+      panic("Unhandled whence ID = %d",whence);
+      return -1;
   }
-
-  Finfo *file = &file_table[fd];
-  off_t new_offset = 0;
-
-  switch (whence)
-  {
-  case SEEK_SET:
-    new_offset = offset;
-    break;
-  case SEEK_CUR:
-    new_offset = file->open_offset + offset;
-    break;
-  case SEEK_END:
-    new_offset = file->size + offset;
-    break;
-
-  default:
-    assert(0);
-    break;
-  }
-
-  if(new_offset < 0){
-    new_offset = 0;
-  }
-  else if(new_offset > file->size){
-    new_offset = file->size;
-  }
-
-  file->open_offset = new_offset;
-  return new_offset;
 }
