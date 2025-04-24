@@ -13,6 +13,9 @@ extern unsigned long _uptime();
 size_t events_read(void *buf, size_t len) {
   int key = _read_key();
   bool key_down = false;
+  if(key){
+    assert(0);
+  }
   if(key > 0x8000){
     key_down = true;
     key -= 0x8000;
@@ -24,8 +27,8 @@ size_t events_read(void *buf, size_t len) {
       sprintf(buf, "ku %s\n",keyname[key]);
     }
   }else{
-    // unsigned long t = _uptime();
-    // sprintf(buf, "t %d\n", t);
+    unsigned long t = _uptime();
+    sprintf(buf, "t %d\n", t);
   }
   int buf_len = strlen(buf);
   if(buf_len > len){
