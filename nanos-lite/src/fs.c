@@ -55,6 +55,7 @@ size_t fs_filesz(int fd) {
 
 void ramdisk_read(void *buf, off_t offset, size_t len);
 extern void dispinfo_read(void *buf, off_t offset, size_t len);
+extern size_t events_read(void *buf, size_t len);
 
 ssize_t fs_read(int fd, void *buf, size_t len){
   if(fd < 0 || fd >= NR_FILES){
@@ -67,7 +68,11 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   if(fd == FD_DISPINFO){
     //assert(0);
     dispinfo_read(buf, file->open_offset, read_len);
-  }else{
+  }
+  else if(FD_EVENTS){
+    return events_read(buf, read_len);
+  }
+  else{
     ramdisk_read(buf, file->disk_offset + file->open_offset, read_len);
   }
   file->open_offset += read_len;
