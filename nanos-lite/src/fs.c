@@ -54,6 +54,7 @@ size_t fs_filesz(int fd) {
 }
 
 void ramdisk_read(void *buf, off_t offset, size_t len);
+extern void dispinfo_read(void *buf, off_t offset, size_t len);
 
 ssize_t fs_read(int fd, void *buf, size_t len){
   if(fd < 0 || fd >= NR_FILES){
@@ -63,7 +64,11 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   Finfo * file = &file_table[fd];
   size_t left = file->size - file->open_offset;
   size_t read_len = (len > left) ? left : len;
-  ramdisk_read(buf, file->disk_offset + file->open_offset, read_len);
+  if(fd == FD_DISPINFO){
+    dispinfo_read(buf, file->open_offset, read_len);
+  }else{
+    ramdisk_read(buf, file->disk_offset + file->open_offset, read_len);
+  }
   file->open_offset += read_len;
 
   return read_len;
@@ -74,6 +79,7 @@ int fs_close(int fd){
 }
 
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
+extern void fb_write(const void *buf, off_t offset, size_t len);
 
 ssize_t fs_write(int fd, const void *buf, size_t len){
   if (fd < 0 || fd >= NR_FILES) {
@@ -83,7 +89,11 @@ ssize_t fs_write(int fd, const void *buf, size_t len){
   Finfo *file = &file_table[fd];  
   size_t left = file->size - file->open_offset;
   size_t write_len = (len > left) ? left : len;  
-  ramdisk_write(buf, file->disk_offset + file->open_offset, write_len);
+  if(fd == FD_FB){
+    fb_write(buf, file->open_offset, write_len);
+  }else{
+    ramdisk_write(buf, file->disk_offset + file->open_offset, write_len);
+  }
   file->open_offset += write_len;
 
   return write_len;
