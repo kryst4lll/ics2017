@@ -19,7 +19,7 @@ int sys_write(int fd, const void *buf, size_t count){
     }
     return count;
   }
-  else if(fd > 3){
+  else if(fd >= 3){
     return fs_write(fd, buf, count);
   }
 
