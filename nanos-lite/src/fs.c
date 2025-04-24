@@ -22,8 +22,16 @@ static Finfo file_table[] __attribute__((used)) = {
 
 #define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
 
+extern void get_screen(int *_width, int *_height);
+
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  
+  int width = 0;
+  int height = 0;
+  get_screen(&width, &height);
+  file_table[FD_FB].size = width * height * 4;
+
 }
 
 int fs_open(const char *pathname, int flags, int mode){

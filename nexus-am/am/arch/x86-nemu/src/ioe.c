@@ -39,3 +39,8 @@ int _read_key() {
   }
   return _KEY_NONE;
 }
+
+void get_screen(int *_width, int *_height){
+  *_width = _screen.width;
+  *_height = _screen.height;
+}
