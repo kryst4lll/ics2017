@@ -81,7 +81,7 @@ ssize_t fs_write(int fd, const void *buf, size_t len){
   return write_len;
 }
 
-off_t fs_leek(int fd, off_t offset, int whence){
+off_t fs_lseek(int fd, off_t offset, int whence){
   if(fd < 0 || fd >= NR_FILES){
     assert(0);
   }

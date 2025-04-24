@@ -57,10 +57,10 @@ int sys_close(int fd){
   return fs_close(fd);
 }
 
-off_t fs_leek(int fd, off_t offset, int whence);
+off_t fs_lseek(int fd, off_t offset, int whence);
 
 int sys_lseek(int fd, off_t offset, int whence){
-  return fs_leek(fd, offset, whence);
+  return fs_lseek(fd, offset, whence);
 }
 
 _RegSet* do_syscall(_RegSet *r) {
