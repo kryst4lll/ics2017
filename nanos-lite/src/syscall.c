@@ -36,7 +36,7 @@ int sys_brk(uint32_t addr){
 
   current_break = addr;
 
-  return 0;
+  return -1;
 }
 
 extern int fs_open(const char *pathname, int flags, int mode);
