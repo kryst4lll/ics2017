@@ -23,7 +23,7 @@ void _exit(int status) {
 
 int _open(const char *path, int flags, mode_t mode) {
   //_exit(SYS_open);
-  return _syscall_(SYS_open, path, flags, mode);
+  return _syscall_(SYS_open, (uintptr_t)path, flags, mode);
 }
 
 int _write(int fd, void *buf, size_t count){
@@ -43,7 +43,7 @@ void *_sbrk(intptr_t increment){
   if(r == 0){
     uintptr_t old_brk = current_break;
     current_break = new_brk;
-    return old_brk;
+    return (void*)old_brk;
   }
 
   return (void *)-1;
