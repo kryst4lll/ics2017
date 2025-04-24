@@ -18,6 +18,7 @@ extern void get_screen(int *_width, int *_height);
 extern void _draw_rect(const uint32_t *pixels, int x, int y, int w, int h);
 
 void dispinfo_read(void *buf, off_t offset, size_t len) {
+  strncpy(buf, dispinfo + offset, len);
 }
 
 void fb_write(const void *buf, off_t offset, size_t len) {
@@ -25,27 +26,26 @@ void fb_write(const void *buf, off_t offset, size_t len) {
   int height = 0;
   get_screen(&width, &height);
 
-    // 计算偏移量对应的坐标
-    int x = (offset % (width * 4)) / 4; // 假设每个像素 4 字节
-    int y = offset / (width * 4);
+  int x = (offset / 4) % width;
+  int y = (offset / 4) / width;
+  
+  int draw_len = len / 4;
+  if(draw_len <= (width - x)){
+    _draw_rect(buf, x, y, draw_len, 1);
+    return;
+  }
+  int more_h = 1 + (draw_len - (width - x)) / width;
+  if(more_h == 1){
+    _draw_rect(buf, x, y, (width - x), 1);
+    _draw_rect(buf + (width - x)*4, 0, y + 1, draw_len - (width - x), 1);
+    return;
+  }
+  _draw_rect(buf, x, y, (width - x), 1);
+  for(int i = 0; i < more_h - 1; i++){
+    _draw_rect(buf + (width - x)*4 + width*i*4, 0, y + 1 + i, width, 1);
+  }
+  _draw_rect(buf + (width - x)*4 + width*(more_h - 1)*4, 0, y + more_h, draw_len - (width - x) - (more_h-1)*width, 1);
 
-    // 计算矩形的宽度和高度
-    int rect_width = (len < (width - x) * 4) ? len / 4 : (width - x);
-    int rect_height = 1;
-    size_t remaining_len = len - rect_width * 4;
-
-    // 更准确地计算矩形高度
-    while (remaining_len > 0) {
-        rect_height++;
-        int available_width = width;
-        if (remaining_len < available_width * 4) {
-            rect_width = remaining_len / 4;
-        }
-        remaining_len -= rect_width * 4;
-    }
-
-    // 调用 _draw_rect 函数
-    _draw_rect((const uint32_t *)buf, x, y, rect_width, rect_height);  
 }
 
 void init_device() {
@@ -53,4 +53,8 @@ void init_device() {
 
   // TODO: print the string to array `dispinfo` with the format
   // described in the Navy-apps convention
+  int width = 0;
+  int height = 0;
+  get_screen(&width, &height);
+  sprintf(dispinfo,"WIDTH:%d\nHEIGHT:%d\n",width,height);  
 }
