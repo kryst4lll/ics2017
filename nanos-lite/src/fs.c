@@ -65,13 +65,14 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   Finfo * file = &file_table[fd];
   size_t left = file->size - file->open_offset;
   size_t read_len = (len > left) ? left : len;
+  
+  if(FD_EVENTS){
+    return events_read(buf, read_len);
+  }
   if(fd == FD_DISPINFO){
     //assert(0);
     dispinfo_read(buf, file->open_offset, read_len);
   }
-  // else if(FD_EVENTS){
-  //   return events_read(buf, read_len);
-  // }
   else{
     ramdisk_read(buf, file->disk_offset + file->open_offset, read_len);
   }
