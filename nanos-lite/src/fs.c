@@ -28,7 +28,7 @@ void init_fs() {
 
 
 int fs_open(const char *pathname, int flags, int mode){
-  if(strcmp(pathname, "/bin/text") == 0){
+  if(strcmp(pathname, "/bin/text") != 0){
     assert(0);
   }
   for(int i = 0; i < NR_FILES; i++){
