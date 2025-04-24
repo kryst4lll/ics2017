@@ -36,16 +36,19 @@ int _write(int fd, void *buf, size_t count){
 
 static uintptr_t current_break = 0;
 void *_sbrk(intptr_t increment){
-  extern end;
-  static uintptr_t old_pb = (uintptr_t)&end;
-  uintptr_t new_pb = old_pb + increment;
-  int r = _syscall_(SYS_brk,new_pb,0,0);
-  if(r == 0){
-    uintptr_t temp = old_pb;
-    old_pb = new_pb;
-    return (void*)temp;
-
+  if (current_break == 0) {
+    extern char end;  
+    current_break = (uint32_t)&end;
   }
+
+  uintptr_t new_brk = current_break + increment;
+  int r = _syscall_(SYS_brk, new_brk, 0, 0);
+  if(r == 0){
+    uintptr_t old_brk = current_break;
+    current_break = new_brk;
+    return (void*)old_brk;
+  }
+
   return (void *)-1;
 }
 
