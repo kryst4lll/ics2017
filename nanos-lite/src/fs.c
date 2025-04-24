@@ -25,25 +25,10 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
-off_t get_open_offset(int fd) {
-  assert(fd>=0 && fd<NR_FILES);
-  return file_table[fd].open_offset;
-}
-void set_open_offset(int fd,off_t n) {
-  assert(fd>=0 && fd<NR_FILES);
-  assert(n>=0);
-  if(n>file_table[fd].size)
-    n = file_table[fd].size;
-  file_table[fd].open_offset = n;
-}
 
-off_t disk_offset(int fd) {
-  assert(fd>=0 && fd<NR_FILES);
-  return file_table[fd].disk_offset;
-}
 
 int fs_open(const char *pathname, int flags, int mode){
-  if(strcmp(pathname, "/share/texts/num") == 0){
+  if(strcmp(pathname, "/bin/text") == 0){
     assert(0);
   }
   for(int i = 0; i < NR_FILES; i++){
@@ -71,14 +56,13 @@ ssize_t fs_read(int fd, void *buf, size_t len){
     assert(0);
   }
 
-  int n = fs_filesz(fd) - get_open_offset(fd);
-  if(n > len)
-    n = len;
+  Finfo * file = &file_table[fd];
+  size_t left = file->size - file->open_offset;
+  size_t read_len = (len > left) ? left : len;
+  ramdisk_read(buf, file->disk_offset + file->open_offset, read_len);
+  file->open_offset += read_len;
 
- 
-  ramdisk_read(buf,disk_offset(fd)+get_open_offset(fd),n);
-  set_open_offset(fd,get_open_offset(fd)+n);
-	return n;
+  return read_len;
 }
 
 int fs_close(int fd){
