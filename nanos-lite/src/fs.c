@@ -66,7 +66,7 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   size_t left = file->size - file->open_offset;
   size_t read_len = (len > left) ? left : len;
   
-  if(FD_EVENTS){
+  if(fd == FD_EVENTS){
     return events_read(buf, len);
   }
   if(fd == FD_DISPINFO){
