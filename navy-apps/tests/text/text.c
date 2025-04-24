@@ -2,7 +2,6 @@
 #include <assert.h>
 
 int main() {
-write(1, "Hello World!\n", 13);
   FILE *fp = fopen("/share/texts/num", "r+");
   assert(fp);
 
