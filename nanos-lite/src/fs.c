@@ -66,19 +66,34 @@ int fs_close(int fd){
 }
 
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
-
+off_t disk_offset(int fd) {
+  assert(fd>=0 && fd<NR_FILES);
+  return file_table[fd].disk_offset;
+}
+off_t get_open_offset(int fd) {
+  assert(fd>=0 && fd<NR_FILES);
+  return file_table[fd].open_offset;
+}
+void set_open_offset(int fd,off_t n) {
+  assert(fd>=0 && fd<NR_FILES);
+  assert(n>=0);
+  if(n>file_table[fd].size)
+    n = file_table[fd].size;
+  file_table[fd].open_offset = n;
+}
 ssize_t fs_write(int fd, const void *buf, size_t len){
-  if (fd < 0 || fd >= NR_FILES) {
-    assert(0);
+  assert(fd>=0 && fd<NR_FILES);
+	if(fd < 3 || fd == FD_DISPINFO) {
+    Log("arg invalid: fd < 3 || fd == FD_DISPINFO");
+    return 0;
   }
+  int n = fs_filesz(fd) - get_open_offset(fd);
+  if(n > len)
+    n = len;
 
-  Finfo *file = &file_table[fd];  
-  size_t left = file->size - file->open_offset;
-  size_t write_len = (len > left) ? left : len;  
-  ramdisk_write(buf, file->disk_offset + file->open_offset, write_len);
-  file->open_offset += write_len;
-
-  return write_len;
+  ramdisk_write(buf,disk_offset(fd)+get_open_offset(fd),n);
+  set_open_offset(fd,get_open_offset(fd)+n);
+	return n;
 }
 
 off_t fs_lseek(int fd, off_t offset, int whence){
