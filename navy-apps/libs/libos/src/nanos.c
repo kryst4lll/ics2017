@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <time.h>
 #include "syscall.h"
-
+#include <string.h> 
 // TODO: discuss with syscall interface
 #ifndef __ISA_NATIVE__
 
@@ -23,6 +23,9 @@ void _exit(int status) {
 
 int _open(const char *path, int flags, mode_t mode) {
   //_exit(SYS_open);
+  if(strcmp(path, "/share/texts/num") == 0){
+    assert(0);
+  }
   return _syscall_(SYS_open, (uintptr_t)path, flags, mode);
 }
 
