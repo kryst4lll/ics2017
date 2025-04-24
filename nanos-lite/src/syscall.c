@@ -26,8 +26,15 @@ int sys_write(int fd, const void *buf, size_t count){
   return -1;
 }
 
+static uintptr_t current_break = 0;
 
 int sys_brk(uint32_t addr){
+  if (current_break == 0) {
+    extern char end;  
+    current_break = (uint32_t)&end;
+  }
+
+  current_break = addr;
 
   return 0;
 }
