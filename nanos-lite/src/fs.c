@@ -27,9 +27,6 @@ void init_fs() {
 }
 
 int fs_open(const char *pathname, int flags, int mode){
-  if(strcmp(pathname, "/share/texts/num") == 0){
-    assert(0);
-  }
   for(int i = 0; i < NR_FILES; i++){
     if(strcmp(file_table[i].name, pathname) == 0){
       file_table[i].open_offset = 0;
@@ -54,7 +51,7 @@ ssize_t fs_read(int fd, void *buf, size_t len){
   if(fd < 0 || fd >= NR_FILES){
     assert(0);
   }
-
+  
   Finfo * file = &file_table[fd];
   size_t left = file->size - file->open_offset;
   size_t read_len = (len > left) ? left : len;
