@@ -29,9 +29,10 @@ int main() {
 #endif
 
   init_fs();
-
-  uint32_t entry = loader(NULL, "/bin/pal");
-  ((void (*)(void))entry)();
+  extern void load_prog(const char *filename);
+  // uint32_t entry = loader(NULL, "/bin/pal");
+  // ((void (*)(void))entry)();
+  load_prog("/bin/dummy");
 
   panic("Should not reach here");
 }
