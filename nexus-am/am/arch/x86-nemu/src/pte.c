@@ -66,21 +66,18 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
-  typedef uint32_t paddr_t;
-  extern uint32_t paddr_read(paddr_t addr, int len);
-  extern void paddr_write(paddr_t addr, int len, uint32_t data);
+  PDE *pgdir = (PDE*)p->ptr;
+  PTE *pgtab = NULL;
 
-  uint32_t pde_addr = (uint32_t)p->ptr + PDX((uint32_t)va)*4;
-  uint32_t pde = paddr_read(pde_addr, 4);
-  if(!(pde & PTE_P)){
-    uint32_t new_pt = (uint32_t)palloc_f();
-    pde = new_pt | PTE_P;
-    paddr_write(pde_addr, 4, pde);
+  PDE *pde = pgdir + PDX(va);
+  if(!(*pde&PTE_P)) {
+    pgtab = (PTE*)(palloc_f());
+    *pde = (uintptr_t)pgtab | PTE_P;
   }
-  uint32_t pte_addr = PTE_ADDR(pde) + PTX((uint32_t)va)*4;
-  uint32_t pte = paddr_read(pte_addr, 4);
-  pte = (uint32_t)pa | PTE_P;
-  paddr_write(pte_addr, 4, pte);
+  pgtab = (PTE*)PTE_ADDR(*pde);
+
+  PTE *pte = pgtab + PTX(va);
+  *pte = (uintptr_t)pa | PTE_P;
 }
 
 void _unmap(_Protect *p, void *va) {
