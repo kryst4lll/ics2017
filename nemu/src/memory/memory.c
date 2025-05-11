@@ -67,7 +67,16 @@ paddr_t page_translate(vaddr_t addr, bool is_write){
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
   if((addr&0xfffff000) != ((addr + len - 1)&0xfffff000)){
-    assert(0);
+    int num1 = 0x1000 - OFFSET(addr);
+    int num2 = len - num1;
+    paddr_t paddr1 = page_translate(addr,false);
+    paddr_t paddr2 = page_translate(addr+num1,false);
+
+    uint32_t low = paddr_read(paddr1,num1);
+    uint32_t high = paddr_read(paddr2,num2);
+
+    uint32_t result = high << (num1 * 8) | low;
+    return result;
   }else{
     paddr_t paddr = page_translate(addr, false);
     return paddr_read(paddr, len);
