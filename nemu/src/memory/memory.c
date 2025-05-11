@@ -11,89 +11,90 @@
 
 uint8_t pmem[PMEM_SIZE];
 
-/* Memory accessing interfaces */
+#define PTE_ADDR(pte) ((uint32_t)(pte) & ~0xfff)
+#define PDX(va) (((uint32_t)(va) >> 22) & 0x3ff)
+#define PTX(va) (((uint32_t)(va) >> 12) & 0x3ff)
+#define OFF(va) ((uint32_t)(va) & 0xfff)
 
-uint32_t paddr_read(paddr_t addr, int len) {
-  int mm = is_mmio(addr);
-  if(mm != -1){
-    return mmio_read(addr, len, mm);
-  }
-  return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
-}
-
-void paddr_write(paddr_t addr, int len, uint32_t data) {
-  int mm = is_mmio(addr);
-  if(mm != -1){
-    mmio_write(addr, len, data, mm);
-  }else{
-    memcpy(guest_to_host(addr), &data, len);
-  }
-}
-
-#define CR3_PDBR(cr3) ((cr3) & 0xfffff000)
-#define PDX(va) (((va)>>22) & 0x3ff)
-#define PTX(va) (((va)>>12) & 0x3ff)
-#define OFFSET(va) ((va) & 0xfff)
-
-paddr_t page_translate(vaddr_t addr, bool is_write){
+paddr_t page_translate(vaddr_t addr, bool iswrite) {
   CR0 cr_0 = (CR0)cpu.cr0;
-  if(cr_0.paging){
+  if(cr_0.paging && cr_0.protect_enable) {
     CR3 cr_3 = (CR3)cpu.cr3;
-    uint32_t pde_addr = CR3_PDBR(cr_3.val) + PDX(addr) * 4;
-    uint32_t pde_val = paddr_read(pde_addr, 4);
-    PDE pde;
-    pde.val = pde_val;
-    assert(pde.present);
 
-    uint32_t pte_addr = CR3_PDBR(pde.val) + PTX(addr) * 4;
-    uint32_t pte_val = paddr_read(pte_addr, 4);
-    PTE pte;
-    pte.val = pte_val;
-    assert(pte.present);
+    PDE* pgdirs = (PDE*)PTE_ADDR(cr_3.val);
+    PDE pde = (PDE)paddr_read((uint32_t)(pgdirs + PDX(addr)),4);
+    Assert(pde.present,"addr=0x%x",addr);
+
+    PTE* ptab = (PTE*)PTE_ADDR(pde.val);
+    PTE pte = (PTE)paddr_read((uint32_t)(ptab + PTX(addr)),4);
+    Assert(pte.present,"addr=0x%x",addr);
 
     pde.accessed = 1;
     pte.accessed = 1;
-    if(is_write){
+    if(iswrite)
       pte.dirty = 1;
-    }
-
-    paddr_t paddr = CR3_PDBR(pte.val) + OFFSET(addr);
+    
+    paddr_t paddr = PTE_ADDR(pte.val) | OFF(addr);
+    //printf("vaddr=0x%08x\tpaddr=0x%08x\n",addr,paddr);
     return paddr;
   }
-
   return addr;
 }
 
+/* Memory accessing interfaces */
+
+uint32_t paddr_read(paddr_t addr, int len) {
+  int r = is_mmio(addr);
+  if(r == -1)
+    return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
+  else
+    return mmio_read(addr,len,r);
+
+}
+
+void paddr_write(paddr_t addr, int len, uint32_t data) {
+  int r = is_mmio(addr);
+  if(r == -1)
+    memcpy(guest_to_host(addr), &data, len);
+  else
+    mmio_write(addr,len,data,r);
+}
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
-  if((addr&0xfffff000) != ((addr + len - 1)&0xfffff000)){
-    //assert(0);
-    uint32_t result = 0;
-    uint32_t bytes_read = 0;    
-    while(bytes_read < len){
-      uint32_t bytes_this_page = 0x1000 - OFFSET(addr);
-      uint32_t bytes_this_access = (bytes_this_page <= (len - bytes_read)) ? bytes_this_page : (len - bytes_read);
-      
-      paddr_t paddr = page_translate(addr, false);
-      uint32_t result_this = paddr_read(paddr, bytes_this_access);
+  if( PTE_ADDR(addr) != PTE_ADDR(addr + len -1)) {
+    int num1 = 0x1000 - OFF(addr);
+    int num2 = len - num1;
+    paddr_t paddr1 = page_translate(addr,false);
+    paddr_t paddr2 = page_translate(addr+num1,false);
 
-      result |= result_this << (bytes_read*8);
-      bytes_read += bytes_this_access;
-      addr += bytes_this_access;
-    }
+    uint32_t low = paddr_read(paddr1,num1);
+    uint32_t high = paddr_read(paddr2,num2);
+
+    uint32_t result = high << (num1 * 8) | low;
     return result;
-
-  }else{
-    paddr_t paddr = page_translate(addr, false);
-    return paddr_read(paddr, len);
+  }
+  else {
+    paddr_t paddr = page_translate(addr,false);
+    return paddr_read(paddr,len);
   }
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-  if((addr&0xfffff000) != ((addr + len - 1)&0xfffff000)){
-    assert(0);
-  }else{
-    paddr_t paddr = page_translate(addr, true);
-    paddr_write(paddr, len, data);
+  if( PTE_ADDR(addr) != PTE_ADDR(addr + len -1)) {
+    int num1 = 0x1000 - OFF(addr);
+    int num2 = len - num1;
+    paddr_t paddr1 = page_translate(addr,true);
+    paddr_t paddr2 = page_translate(addr+num1,true);
+
+    uint32_t low = data & (~0u >> ((4 - num1) << 3));
+    uint32_t high = data >> ((4 - num2) << 3);
+
+    paddr_write(paddr1,num1,low);
+    paddr_write(paddr2,num2,high);
+    return;
+  }
+  else {
+    paddr_t paddr = page_translate(addr,true);
+    paddr_write(paddr,len,data);
   }
 }
