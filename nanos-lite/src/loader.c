@@ -24,13 +24,13 @@ uintptr_t loader(_Protect *as, const char *filename) {
   // if(read_len < 0){
   //   assert(0);
   // }
-  int ppnum = size / PGSIZE;
+  int pgnum = size / PGSIZE;
   if(size % PGSIZE != 0) {
-    ppnum++;
+    pgnum++;
   }
   void *pa = NULL;
   void *va = DEFAULT_ENTRY;
-  for(int i = 0;i < ppnum;i++) {
+  for(int i = 0;i < pgnum;i++) {
     pa = new_page();
     _map(as,va,pa);
     fs_read(fd,pa,PGSIZE);
