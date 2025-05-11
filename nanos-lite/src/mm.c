@@ -21,17 +21,24 @@ int mm_brk(uint32_t new_brk) {
   }
   else{
     if(new_brk > current->max_brk){
-      uint32_t first = PGROUNDUP(current->max_brk);
-      uint32_t end = PGROUNDDOWN(new_brk);
-      if((new_brk & 0xfff)==0)
-        end -= PGSIZE;
-      for(uint32_t va=first;va<=end;va+=PGSIZE){
-        void *pa = new_page();
-        _map(&(current->as),(void*) va,pa);
+      uint32_t start_page = PGROUNDUP(current->max_brk);
+      uint32_t end_page = PGROUNDDOWN(new_brk);
+      if (start_page >= end_page) {
+        current->max_brk = new_brk;
+        return 0;
       }
-      current->max_brk=new_brk;
+      if((end_page & 0xfff) == 0){
+        end_page -= PGSIZE;
+      }
+
+      for(uint32_t va = start_page; va <= end_page; va += PGSIZE){
+        void *pa = new_page();
+        _map(&current->as, (void *)va, pa);
+      }
+
+      current->max_brk = new_brk;
     }
-    current->cur_brk=new_brk;
+    current->cur_brk = new_brk;
   }
   return 0;
 }
