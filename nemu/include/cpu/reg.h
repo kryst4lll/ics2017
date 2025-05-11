@@ -89,6 +89,9 @@ typedef struct {
     uint32_t base;
   }idtr;
 
+  uint32_t cr3;
+  uint32_t cr0;
+
 } CPU_state;
 
 extern CPU_state cpu;
