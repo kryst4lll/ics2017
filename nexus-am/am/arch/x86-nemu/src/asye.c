@@ -1,6 +1,6 @@
 #include <am.h>
 #include <x86.h>
-
+#include <assert.h>
 static _RegSet* (*H)(_Event, _RegSet*) = NULL;
 
 void vecsys();
