@@ -8,6 +8,9 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 
   //TODO();
   memcpy(&t0, &cpu.eflags, sizeof(cpu.eflags));
+
+  cpu.eflags.IF = 0;
+
   rtl_push(&t0);
   rtl_push(&cpu.cs);
   rtl_li(&t0, ret_addr);
@@ -24,4 +27,5 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 }
 
 void dev_raise_intr() {
+  cpu.INTR = true;
 }
