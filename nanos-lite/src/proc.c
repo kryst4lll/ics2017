@@ -32,8 +32,7 @@ _RegSet* schedule(_RegSet *prev) {
   int cnt_pal = 0;
   // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   if(current == &pcb[0]){
-    if(cnt_pal != 100){
-      current = &pcb[0];
+    if(cnt_pal != 1000){
       cnt_pal++;
     }else{
       cnt_pal = 0;
