@@ -1,6 +1,6 @@
 #include <am.h>
 #include <x86.h>
-#include <assert.h>
+#include <klib.h>
 static _RegSet* (*H)(_Event, _RegSet*) = NULL;
 
 void vecsys();
@@ -14,6 +14,7 @@ _RegSet* irq_handle(_RegSet *tf) {
       case 0x80: ev.event = _EVENT_SYSCALL; break;
       case 0x81: 
         ev.event = _EVENT_TRAP; 
+        assert(0);
         break;
       default: ev.event = _EVENT_ERROR; break;
     }
