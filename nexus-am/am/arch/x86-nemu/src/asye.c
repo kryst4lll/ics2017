@@ -15,6 +15,7 @@ _RegSet* irq_handle(_RegSet *tf) {
       case 0x81: 
         ev.event = _EVENT_TRAP; 
         printf("_EVENT_TRAP!\n");
+        return NULL;
         break;
       default: ev.event = _EVENT_ERROR; break;
     }
