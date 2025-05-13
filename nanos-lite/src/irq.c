@@ -6,7 +6,7 @@ static _RegSet* do_event(_Event e, _RegSet* r) {
   switch (e.event) {
     case _EVENT_SYSCALL:
       do_syscall(r);
-      break;
+      return schedule(r);  
     case _EVENT_TRAP:
       printf("_EVENT_TRAP!\n");
       return schedule(r);      
