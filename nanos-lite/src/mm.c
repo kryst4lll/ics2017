@@ -21,20 +21,12 @@ int mm_brk(uint32_t new_brk) {
   }
   else{
     if(new_brk > current->max_brk){
-      uint32_t start_page = PGROUNDUP(current->max_brk);
-      uint32_t end_page = PGROUNDDOWN(new_brk);
-
-      if((new_brk & 0xfff) == 0){
-        end_page -= PGSIZE;
-      }
-      if (start_page > end_page) {
-        current->max_brk = new_brk;
-        return 0;
-      }
-
-      for(uint32_t va = start_page; va <= end_page; va += PGSIZE){
-        void *pa = new_page();
-        _map(&current->as, (void *)va, pa);
+      uint32_t size = new_brk - current->cur_brk; 
+      uint32_t pages_needed = (size + PGSIZE - 1) / PGSIZE;  
+      uint32_t start_page = PGROUNDUP(current->max_brk);  
+      for (int i = 0; i < pages_needed; i++) {
+        uint32_t va = start_page + i * PGSIZE;  
+        _map(&current->as, (void*)va, new_page());
       }
 
       current->max_brk = new_brk;
